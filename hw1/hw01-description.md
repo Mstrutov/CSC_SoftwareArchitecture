@@ -1,5 +1,6 @@
-1. NinB (NinB is not Bash) реализует основную логику: инициализация `Environment`, компонент (Reader, …, Executor) и сам цикл.
+1. NinB (NinB is not Bash) реализует основную логику: инициализация `Environment`, компонент (`Reader`, …, `Executor`) и сам цикл.
   Цикл выглядит примерно так:
+  ```
   rawStmt = reader.read();
   quotedStmt = quoteParser.parse(rawStmt);
   lambdaStmt = controlParser.parse(quotedStmt);
@@ -8,6 +9,7 @@
   resultCode = executor.execute(executable);
 
   if (resultCode…) { … }
+  ```
 
  По сути, тело цикла отражает флоу данных через компоненты (см. Data Flow Diagram).
 
