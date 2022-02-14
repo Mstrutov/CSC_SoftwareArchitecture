@@ -65,14 +65,20 @@
 Тогда будем иметь следующую последовательность разбора
 RawStmt: a=3 | echo “$xy” ‘ab’ cd | pwd
 
-- `QuoteParser`(a=3 | echo “$xy” ‘ab’ cd | pwd) --->
+- `QuoteParser`(a=3 | echo “$xy” ‘ab’ cd | pwd)   --->
 
   `QuotedStmt`: [
+  
     RawString(a=3 | echo ),
+    
     WeakQuotedString($xy),
+    
     RawString( ),
+    
     FullQuotedString(ab),
+    
     RawString( cd | pwd)
+    
   ]
 
 Теперь напишем преобразование в LambdaStmt:
