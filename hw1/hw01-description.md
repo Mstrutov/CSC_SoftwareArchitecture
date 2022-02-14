@@ -66,6 +66,7 @@
 RawStmt: a=3 | echo “$xy” ‘ab’ cd | pwd
 
 - `QuoteParser`(a=3 | echo “$xy” ‘ab’ cd | pwd) --->
+
   `QuotedStmt`: [
     RawString(a=3 | echo ),
     WeakQuotedString($xy),
