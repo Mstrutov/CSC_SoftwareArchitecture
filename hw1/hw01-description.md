@@ -1,4 +1,4 @@
-1. NinB (NinB is not Bash) реализует основную логику: инициализация Environment, компонент (Reader, …, Executor) и сам цикл.
+1. NinB (NinB is not Bash) реализует основную логику: инициализация `Environment`, компонент (Reader, …, Executor) и сам цикл.
   Цикл выглядит примерно так:
   rawStmt = reader.read();
   quotedStmt = quoteParser.parse(rawStmt);
@@ -9,7 +9,7 @@
 
   if (resultCode…) { … }
 
- По сути, тело цикла отражает флоу данных через компоненты — это мы спроектировали на практике (V0).
+ По сути, тело цикла отражает флоу данных через компоненты (см. Data Flow Diagram).
 
 
 2. Environment хранит словарь переменная-значение. В нашей постановке значение может быть только строкой. Environment должен быть доступен для Substitutor и Assignment.
