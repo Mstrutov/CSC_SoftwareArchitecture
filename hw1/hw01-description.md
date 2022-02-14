@@ -1,14 +1,14 @@
 1. NinB (NinB is not Bash) реализует основную логику: инициализация `Environment`, компонент (`Reader`, …, `Executor`) и сам цикл.
   Цикл выглядит примерно так:
   ```
-  rawStmt = reader.read();
-  quotedStmt = quoteParser.parse(rawStmt);
-  lambdaStmt = controlParser.parse(quotedStmt);
-  stmt = substitutor.substitute(lambdaStmt);
-  executable = commandParser.parse(stmt);
-  resultCode = executor.execute(executable);
+    rawStmt = reader.read();
+    quotedStmt = quoteParser.parse(rawStmt);
+    lambdaStmt = controlParser.parse(quotedStmt);
+    stmt = substitutor.substitute(lambdaStmt);
+    executable = commandParser.parse(stmt);
+    resultCode = executor.execute(executable);
 
-  if (resultCode…) { … }
+    if (resultCode…) { … }
   ```
 
  По сути, тело цикла отражает флоу данных через компоненты (см. Data Flow Diagram).
@@ -60,74 +60,113 @@
 
 
 
-**Пример:** Предположим, что в окружении есть переменная со значением xy=123. Пусть пользователь ввел строку
- a=3 | echo “$xy” ‘ab’ cd | pwd
-Тогда будем иметь следующую последовательность разбора
-RawStmt: a=3 | echo “$xy” ‘ab’ cd | pwd
+**Пример:** Предположим, что в окружении есть переменная со значением xy=123. Пусть пользователь ввел строку _**a=3 | echo “$xy” ‘ab’ cd | pwd**_
+
+Тогда будем иметь следующую последовательность разбора:
+
+- `RawStmt`: a=3 | echo “$xy” ‘ab’ cd | pwd
 
 - `QuoteParser`(a=3 | echo “$xy” ‘ab’ cd | pwd)   --->
-
+  
   `QuotedStmt`: [
   
-    RawString(a=3 | echo ),
-    
-    WeakQuotedString($xy),
-    
-    RawString( ),
-    
-    FullQuotedString(ab),
-    
-    RawString( cd | pwd)
+    &nbsp;&nbsp;&nbsp;&nbsp;`RawString`(a=3 | echo ),
+
+    &nbsp;&nbsp;&nbsp;&nbsp;`WeakQuotedString`($xy),
+
+    &nbsp;&nbsp;&nbsp;&nbsp;`RawString`( ),
+
+    &nbsp;&nbsp;&nbsp;&nbsp;`FullQuotedString`(ab),
+
+    &nbsp;&nbsp;&nbsp;&nbsp;`RawString`( cd | pwd)
     
   ]
 
-Теперь напишем преобразование в LambdaStmt:
-[RawString(a=3 | echo ),
-WeakQuotedString($xy),
-RawString( ),
-FullQuotedString(ab),
-RawString( cd | pwd)]
-—>
+- Теперь напишем преобразование в LambdaStmt:
+
 [
-LambdaStmt([
-        RawString(a),
-        AssignmentOp(),
-        RawString(3 )
-]),
-LambdaStmt([
-        RawString( echo ),
-        WeakQuotedString($xy),
-        RawString( ),
-        FullQuotedString(ab),
-        RawString( cd )
-]),
-LambdaStmt([
-        RawString( pwd)
-])
+
+  &nbsp;&nbsp;&nbsp;&nbsp;`RawString`(a=3 | echo ),
+
+  &nbsp;&nbsp;&nbsp;&nbsp;`WeakQuotedString`($xy),
+
+  &nbsp;&nbsp;&nbsp;&nbsp;`RawString`( ),
+
+  &nbsp;&nbsp;&nbsp;&nbsp;`FullQuotedString`(ab),
+
+  &nbsp;&nbsp;&nbsp;&nbsp;`RawString`( cd | pwd)
+  
+]  --->
+
+[
+
+  `LambdaStmt`([
+  
+  &nbsp;&nbsp;&nbsp;&nbsp;`RawString`(a), 
+  
+  &nbsp;&nbsp;&nbsp;&nbsp;`AssignmentOp`(), 
+  
+  &nbsp;&nbsp;&nbsp;&nbsp;`RawString`(3 )
+          
+  ]),
+
+  `LambdaStmt`([
+  
+  &nbsp;&nbsp;&nbsp;&nbsp;`RawString`( echo ),
+  
+  &nbsp;&nbsp;&nbsp;&nbsp;`WeakQuotedString`($xy), 
+  
+  &nbsp;&nbsp;&nbsp;&nbsp;`RawString`( ), 
+  
+  &nbsp;&nbsp;&nbsp;&nbsp;`FullQuotedString`(ab), 
+  
+  &nbsp;&nbsp;&nbsp;&nbsp;`RawString`( cd )
+          
+  ]),
+
+  `LambdaStmt`([
+  
+  &nbsp;&nbsp;&nbsp;&nbsp;`RawString`( pwd)
+          
+  ])
+  
 ]
 
-Поле-словарь только во втором LambdaStmt будет не пуст, так как только в нем есть вхождение $ (т.е. подстановка), при этом
+Поле-словарь только во втором `LambdaStmt` будет не пуст, так как только в нем есть вхождение $ (т.е. подстановка), при этом
 dict[‘xy’] = MultiMap{(1, 0, 3)}
- Почему? Подстановка есть только во втором элементе массива (в WeakQuotedString($xy)), соответственно, 1 на первой позиции в словарном значении соответствует номеру элемента массива (нумерация с нуля), в который нужно подставить значение переменной xy. Рассмотрим строку $xy. Замещение произойдет с 0-ой (символ $) по 2-ю (символ y) позиции, а храним мы как раз начало и конец+1, т.е. 0 и 3
+ Почему? Подстановка есть только во втором элементе массива (в `WeakQuotedString`($xy)), соответственно, 1 на первой позиции в словарном значении соответствует номеру элемента массива (нумерация с нуля), в который нужно подставить значение переменной xy. Рассмотрим строку $xy. Замещение произойдет с 0-ой (символ $) по 2-ю (символ y) позиции, а храним мы как раз начало и конец+1, т.е. 0 и 3
 
-Применяя Substitutor, внутри второго LambdaStmt произойдет замена
-WeakQuotedString($xy) -> WeakQuotedString(123)
+- Применяя `Substitutor`, внутри второго `LambdaStmt` произойдет замена
+`WeakQuotedString`($xy) ---> `WeakQuotedString`(123)
 
-Остальные LambdaStmt не меняются, так как в них отсутствует подстановка
+Остальные `LambdaStmt` не меняются, так как в них отсутствует подстановка
 
-Отдавая все на вход CommandParser-у, получим:
-Stmt([
-        RawString(a),
-        AssignmentOp(),
-        RawString(3 )
-]) —> Executable(binary: AssignmentCmd, args: [“3”]),
-Stmt([
-        RawString( echo ),
-        WeakQuotedString(12),
-        RawString( ),
-        FullQuotedString(ab),
-        RawString( cd )
-]) -> Executable(binary: Echo, args: [“12”, “ab”, “cd”]),
-Stmt([
-        RawString( pwd)
-]) -> Pwd()
+- Отдавая все на вход `CommandParser`-у, получим:
+
+`Stmt`([
+
+  &nbsp;&nbsp;&nbsp;&nbsp;`RawString`(a),
+  &nbsp;&nbsp;&nbsp;&nbsp;`AssignmentOp`(),
+  &nbsp;&nbsp;&nbsp;&nbsp;`RawString`(3 )
+        
+]) &nbsp;--->&nbsp; `Executable`(binary: `AssignmentCmd`, args: [“3”]),
+
+<br /><br />
+
+`Stmt`([
+
+  &nbsp;&nbsp;&nbsp;&nbsp;`RawString`( echo ),
+  &nbsp;&nbsp;&nbsp;&nbsp;`WeakQuotedString`(12),
+  &nbsp;&nbsp;&nbsp;&nbsp;`RawString`( ),
+  &nbsp;&nbsp;&nbsp;&nbsp;`FullQuotedString`(ab),
+  &nbsp;&nbsp;&nbsp;&nbsp;`RawString`( cd )
+  
+]) &nbsp;--->&nbsp;  `Executable`(binary: `Echo`, args: [“12”, “ab”, “cd”]),
+
+<br /><br />
+
+`Stmt`([
+
+  &nbsp;&nbsp;&nbsp;&nbsp;`RawString`( pwd)
+  
+]) &nbsp;--->&nbsp; `Pwd`()
