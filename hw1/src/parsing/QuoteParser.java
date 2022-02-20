@@ -13,7 +13,8 @@ import java.util.Scanner;
 
 public class QuoteParser {
     public QuotedStmt parse(RawStmt rawStmt) {
-        Scanner sc = new Scanner(rawStmt.getString());
+//        TODO: fix method
+        /*Scanner sc = new Scanner(rawStmt.getString());
         List<QuoteProcessedString> parts = new ArrayList<>();
         while (sc.hasNext()) {
             String tmp = sc.next();
@@ -28,7 +29,8 @@ public class QuoteParser {
                 parts.add(new RawString(tmp));
             }
         }
-        return new QuotedStmt(parts);
+        return new QuotedStmt(parts);*/
+        return null;
     }
 
 }
