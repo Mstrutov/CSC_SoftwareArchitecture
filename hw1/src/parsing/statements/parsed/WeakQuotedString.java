@@ -1,5 +1,8 @@
 package parsing.statements.parsed;
 
-public class WeakQuotedString implements EscapedString {
+public class WeakQuotedString extends EscapedString {
 
+    public WeakQuotedString(String str) {
+        super(str);
+    }
 }
