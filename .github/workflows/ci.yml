@@ -19,5 +19,6 @@ jobs:
           sudo apt-get install openjdk-17-jdk build-essential
       - name: Build
         run: |
+          cd hw1
           mkdir -p build
           javac -sourcepath src -d build src/NinB.java
