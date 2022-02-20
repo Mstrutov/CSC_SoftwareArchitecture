@@ -4,8 +4,10 @@ on:
     types: [opened, edited, synchronize, reopened, labeled]
   push:
     branches:
-      - main
+      - master
       - hw02
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-18.04
