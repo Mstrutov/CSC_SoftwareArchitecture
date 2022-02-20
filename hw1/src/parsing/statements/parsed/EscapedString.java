@@ -1,5 +1,7 @@
 package parsing.statements.parsed;
 
-public interface EscapedString extends QuoteProcessedString {
-
+public abstract class EscapedString extends QuoteProcessedString {
+    public EscapedString(String str) {
+        super(str);
+    }
 }

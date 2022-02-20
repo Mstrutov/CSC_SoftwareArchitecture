@@ -1,5 +1,13 @@
 package parsing.statements.parsed;
 
-public interface QuoteProcessedString extends ParsedString {
+// TODO: ParsedString
+public abstract class QuoteProcessedString implements ParsedString {
+    private final String str;
+    public QuoteProcessedString(String str) {
+        this.str = str;
+    }
 
+    public String getString() {
+        return str;
+    }
 }
