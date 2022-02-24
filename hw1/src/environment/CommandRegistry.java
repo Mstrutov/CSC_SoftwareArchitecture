@@ -4,9 +4,10 @@ import execution.commands.BuiltInCmd;
 import java.util.Map;
 
 public class CommandRegistry {
-    Map<String, BuiltInCmd> cmdEnvironment;
+    private Map<String, BuiltInCmd> cmdEnvironment;
 
+    //TODO: либо наполнять в конструкторе NinB, либо как-нибудь через static придумать
     public BuiltInCmd getCmd(String cmdName) {
-        return cmdEnvironment.getOrDefault(cmdName, null);
+        return cmdEnvironment.get(cmdName);
     }
 }
