@@ -54,6 +54,7 @@ public class CommandParser {
                     currentString.append('=');
                 }
             } else if (parsedString instanceof EscapedString) {
+                // TODO: move getString() up to ParsedString
                 currentString.append(((EscapedString) parsedString).getString());
             } else {
                 String rawString = ((RawString) parsedString).getString();
@@ -88,6 +89,7 @@ public class CommandParser {
         return Objects.requireNonNullElseGet(builtInCmd, ExternalCmd::new);
     }
 
+    // TODO: consider Character.isWhitespace()
     static private boolean isSpaceSymbol(char ch) {
         return ch == ' ';
     }
