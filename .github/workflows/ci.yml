@@ -13,14 +13,13 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-      - name: Install build tools
-        run: |
-          sudo apt-get update
-          sudo apt-get install openjdk-17-jdk build-essential
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '17'
       - name: Build
         run: |
           cd hw1
-          ./gradlew build
+          ./gradlew compileJava
       - name: Test
         run: |
           cd hw1
