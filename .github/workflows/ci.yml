@@ -20,5 +20,8 @@ jobs:
       - name: Build
         run: |
           cd hw1
-          mkdir -p build
-          javac -sourcepath src -d build src/NinB.java
+          ./gradlew build
+      - name: Test
+        run: |
+          cd hw1
+          ./gradlew test
