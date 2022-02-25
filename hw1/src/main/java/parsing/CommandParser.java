@@ -50,6 +50,7 @@ public class CommandParser {
             if (parsedString instanceof AssignmentOperator) {
                 if (binary == null) {
                     binary = new AssignmentCmd(); // TODO: pass varName to assign to
+                    currentString.setLength(0);
                 } else {
                     currentString.append('=');
                 }
@@ -66,8 +67,8 @@ public class CommandParser {
                                 binary = resolveBinary(currentString.toString());
                             } else {
                                 arguments.add(currentString.toString());
-                                currentString.setLength(0);
                             }
+                            currentString.setLength(0);
                         }
                     } else {
                         currentString.append(ch);
@@ -76,7 +77,11 @@ public class CommandParser {
             }
         }
         if (currentString.length() > 0) {
-            arguments.add(currentString.toString());
+            if (binary == null) {
+                binary = resolveBinary(currentString.toString());
+            } else {
+                arguments.add(currentString.toString());
+            }
         }
 
         return new Executable(binary, arguments);
