@@ -1,6 +1,4 @@
-package environment;
-
-import execution.commands.BuiltInCmd;
+package main.java.environment;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,6 +1,6 @@
-package execution.commands;
+package main.java.execution.commands;
 
-import execution.ResultCode;
+import main.java.execution.ResultCode;
 
 public interface Binary {
     ResultCode execute(String[] args, StringBuilder buffer);

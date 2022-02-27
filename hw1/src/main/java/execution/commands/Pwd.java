@@ -1,6 +1,6 @@
-package execution.commands;
+package main.java.execution.commands;
 
-import execution.ResultCode;
+import main.java.execution.ResultCode;
 
 import java.io.File;
 

@@ -1,8 +1,8 @@
-package parsing;
+package main.java.parsing;
 
 import java.io.InputStream;
 import java.util.Scanner;
-import parsing.statements.RawStmt;
+import main.java.parsing.statements.RawStmt;
 
 public class Reader {
     Scanner scanner;
