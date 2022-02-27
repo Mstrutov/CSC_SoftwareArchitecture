@@ -1,6 +1,6 @@
-package execution;
+package main.java.execution;
 
-import execution.commands.Binary;
+import main.java.execution.commands.Binary;
 import java.util.List;
 
 public class Executable {
@@ -24,8 +24,6 @@ public class Executable {
     }
 
     public ResultCode execute(StringBuilder buffer) {
-        binary.execute(args, buffer);
-
-        throw new UnsupportedOperationException();
+        return binary.execute(args, buffer);
     }
 }

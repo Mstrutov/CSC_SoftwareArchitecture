@@ -1,20 +1,21 @@
-package parsing;
+package main.java.parsing;
 
-import environment.CommandRegistry;
-import environment.Environment;
-import execution.Executable;
-import execution.commands.AssignmentCmd;
-import execution.commands.Binary;
-import execution.commands.BuiltInCmd;
-import execution.commands.ExternalCmd;
+import main.java.environment.CommandRegistry;
+import main.java.environment.Environment;
+import main.java.execution.Executable;
+import main.java.execution.commands.AssignmentCmd;
+import main.java.execution.commands.Binary;
+import main.java.execution.commands.BuiltInCmd;
+import main.java.execution.commands.ExternalCmd;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import parsing.statements.LambdaStmt;
-import parsing.statements.parsed.AssignmentOperator;
-import parsing.statements.parsed.EscapedString;
-import parsing.statements.parsed.ParsedString;
-import parsing.statements.parsed.RawString;
+
+import main.java.parsing.statements.Stmt;
+import main.java.parsing.statements.parsed.AssignmentOperator;
+import main.java.parsing.statements.parsed.EscapedString;
+import main.java.parsing.statements.parsed.ParsedString;
+import main.java.parsing.statements.parsed.RawString;
 
 public class CommandParser {
     private final CommandRegistry commandRegistry;
@@ -25,19 +26,19 @@ public class CommandParser {
         this.environment = environment;
     }
 
-    public List<Executable> parse(List<LambdaStmt> inStmts) {
+    public List<Executable> parse(List<Stmt> inStmts) {
         if (inStmts == null) {
             return null;
         }
 
         List<Executable> executables = new ArrayList<>();
-        for (LambdaStmt inStmt : inStmts) {
+        for (Stmt inStmt : inStmts) {
             executables.add(parseSingle(inStmt));
         }
         return executables;
     }
 
-    private Executable parseSingle(LambdaStmt inStmt) {
+    private Executable parseSingle(Stmt inStmt) {
         if (inStmt == null) {
             throw new NullPointerException(); // inStmt should not be null. assert instead?
         }
@@ -65,18 +66,12 @@ public class CommandParser {
 
                 for (char ch : rawString.toCharArray()) { // Horrible nested stuff, I know...
                     if (isSpaceSymbol(ch)) {
-                        if (currentString.length() > 0) {
-                            if (binary == null) {
-                                binary = resolveBinary(currentString.toString());
-                            } else {
-                                arguments.add(currentString.toString());
-                            }
-                            currentString.setLength(0);
-                        }
+                        binary = resolve(binary, arguments, currentString);
                     } else {
                         currentString.append(ch);
                     }
                 }
+                binary = resolve(binary, arguments, currentString);
             }
         }
         if (currentString.length() > 0) {
@@ -88,6 +83,18 @@ public class CommandParser {
         }
 
         return new Executable(binary, arguments);
+    }
+
+    private Binary resolve(Binary binary, List<String> arguments, StringBuilder currentString) {
+        if (currentString.length() > 0) {
+            if (binary == null) {
+                binary = resolveBinary(currentString.toString());
+            } else {
+                arguments.add(currentString.toString());
+            }
+            currentString.setLength(0);
+        }
+        return binary;
     }
 
     private Binary resolveBinary(String binaryString) {

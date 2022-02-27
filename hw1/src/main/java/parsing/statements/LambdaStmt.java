@@ -1,19 +1,27 @@
-package parsing.statements;
+package main.java.parsing.statements;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import parsing.statements.parsed.ParsedString;
+import main.java.parsing.statements.parsed.QuoteProcessedString;
 
 public class LambdaStmt {
-    private final List<ParsedString> parts = new ArrayList<>();
+    private final List<QuoteProcessedString> parts;
     private int index = 0;
 
-    public void addPart(ParsedString part) {
+    public LambdaStmt(List<QuoteProcessedString> parts) {
+        this.parts = parts;
+    }
+
+    public LambdaStmt() {
+        parts = new ArrayList<>();
+    }
+
+    public void addPart(QuoteProcessedString part) {
         this.parts.add(part);
     }
 
-    public List<ParsedString> getParts() {
+    public List<QuoteProcessedString> getParts() {
         return parts;
     }
 
@@ -22,7 +30,7 @@ public class LambdaStmt {
         return index < parts.size();
     }
 
-    public ParsedString next() {
+    public QuoteProcessedString next() {
         if (!hasNext()) {
             throw new NoSuchElementException("There is no next QuoteProcessedString");
         }

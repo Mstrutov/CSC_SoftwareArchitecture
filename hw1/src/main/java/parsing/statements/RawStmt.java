@@ -1,7 +1,8 @@
-package parsing.statements;
+package main.java.parsing.statements;
 
 public class RawStmt {
     private final String str;
+
     public RawStmt(String str) {
         this.str = str;
     }

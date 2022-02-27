@@ -1,12 +1,19 @@
-package parsing;
+package main.java.parsing;
 
-import parsing.statements.QuotedStmt;
-import parsing.statements.RawStmt;
+import main.java.parsing.statements.QuotedStmt;
+import main.java.parsing.statements.RawStmt;
+import main.java.parsing.statements.parsed.FullQuotedString;
+import main.java.parsing.statements.parsed.QuoteProcessedString;
+import main.java.parsing.statements.parsed.RawString;
+import main.java.parsing.statements.parsed.WeakQuotedString;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class QuoteParser {
     public QuotedStmt parse(RawStmt rawStmt) {
-//        TODO: fix method
-        /*Scanner sc = new Scanner(rawStmt.getString());
+        Scanner sc = new Scanner(rawStmt.getString());
         List<QuoteProcessedString> parts = new ArrayList<>();
         while (sc.hasNext()) {
             String tmp = sc.next();
@@ -21,8 +28,7 @@ public class QuoteParser {
                 parts.add(new RawString(tmp));
             }
         }
-        return new QuotedStmt(parts);*/
-        return null;
+        return new QuotedStmt(parts);
     }
 
 }

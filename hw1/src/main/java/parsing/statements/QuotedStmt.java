@@ -1,8 +1,8 @@
-package parsing.statements;
+package main.java.parsing.statements;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import parsing.statements.parsed.QuoteProcessedString;
+import main.java.parsing.statements.parsed.QuoteProcessedString;
 
 public class QuotedStmt {
     private final List<QuoteProcessedString> parts;

@@ -1,11 +1,12 @@
-package execution;
+package main.java.execution;
 
 import java.util.List;
 
 public class Executor {
-    private final StringBuilder buffer = new StringBuilder();
+    private StringBuilder buffer;
 
-    ResultCode execute(List<Executable> inStmts) {
+    public ResultCode execute(List<Executable> inStmts) {
+        buffer = new StringBuilder();
         if (inStmts == null || inStmts.size() == 0) {
             return ResultCode.okCode();
         }
@@ -13,17 +14,20 @@ public class Executor {
         if (inStmts.size() > 1) {
             throw new UnsupportedOperationException();
         }
-
+        ResultCode resultCode = null;
         for (Executable inStmt : inStmts) {
-            inStmt.execute(buffer);
+            resultCode = inStmt.execute(buffer);
+            if (resultCode.getReturnCode() != 0) {
+                return resultCode;
+            }
         }
 
         System.out.println(buffer);
 
-        return ResultCode.okCode();
+        return resultCode;
     }
 
-    String getBuffer() {
+    public String getBuffer() {
         return buffer.toString();
     }
 }
