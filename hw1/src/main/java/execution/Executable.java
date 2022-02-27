@@ -5,23 +5,26 @@ import java.util.List;
 
 public class Executable {
     private final Binary binary;
-    private final List<String> args;
+    private final String[] args;
 
     public Executable(Binary binary, List<String> args) {
         this.binary = binary;
-        this.args = args;
+
+        this.args = args == null
+                ? null
+                : args.toArray(new String[0]);
     }
 
     public Binary getBinary() {
         return binary;
     }
 
-    public List<String> getArgs() {
+    public String[] getArgs() {
         return args;
     }
 
-    public ResultCode execute() {
-        // binary.execute(args);
+    public ResultCode execute(StringBuilder buffer) {
+        binary.execute(args, buffer);
 
         throw new UnsupportedOperationException();
     }

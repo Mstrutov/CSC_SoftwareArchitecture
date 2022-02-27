@@ -4,6 +4,17 @@ public class ResultCode {
     private int returnCode;
     private boolean exitSignal;
 
+    private static final ResultCode okCode = new ResultCode(0, false);
+    private static final ResultCode exitCode = new ResultCode(0, true);
+
+    public static ResultCode okCode() {
+        return okCode;
+    }
+
+    public static ResultCode exitCode() {
+        return exitCode;
+    }
+
     public ResultCode(int returnCode, boolean exitSignal) {
         this.returnCode = returnCode;
         this.exitSignal = exitSignal;

@@ -1,6 +1,7 @@
 package parsing;
 
 import environment.CommandRegistry;
+import environment.Environment;
 import execution.Executable;
 import execution.commands.AssignmentCmd;
 import execution.commands.Binary;
@@ -17,9 +18,11 @@ import parsing.statements.parsed.RawString;
 
 public class CommandParser {
     private final CommandRegistry commandRegistry;
+    private final Environment environment;
 
-    public CommandParser(CommandRegistry commandRegistry) {
+    public CommandParser(CommandRegistry commandRegistry, Environment environment) {
         this.commandRegistry = commandRegistry;
+        this.environment = environment;
     }
 
     public List<Executable> parse(List<LambdaStmt> inStmts) {
@@ -49,7 +52,7 @@ public class CommandParser {
             // TODO: come up with some polymorphism
             if (parsedString instanceof AssignmentOperator) {
                 if (binary == null) {
-                    binary = new AssignmentCmd(); // TODO: pass varName to assign to
+                    binary = new AssignmentCmd(currentString.toString(), environment);
                     currentString.setLength(0);
                 } else {
                     currentString.append('=');
@@ -90,8 +93,7 @@ public class CommandParser {
     private Binary resolveBinary(String binaryString) {
         BuiltInCmd builtInCmd = commandRegistry.getCmd(binaryString);
 
-        // TODO: pass binaryString to ExternalCmd
-        return Objects.requireNonNullElseGet(builtInCmd, ExternalCmd::new);
+        return Objects.requireNonNullElseGet(builtInCmd, () -> new ExternalCmd(binaryString));
     }
 
     // TODO: consider Character.isWhitespace()

@@ -5,8 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import environment.CommandRegistry;
+import environment.Environment;
 import execution.Executable;
 import execution.commands.AssignmentCmd;
+import execution.commands.Cat;
+import execution.commands.Echo;
 import execution.commands.ExternalCmd;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +25,7 @@ import parsing.statements.parsed.WeakQuotedString;
 
 public class CommandParserTest {
 
-    private final CommandParser commandParser = new CommandParser(new CommandRegistry());
+    private final CommandParser commandParser = new CommandParser(new CommandRegistry(), new Environment());
 
     @Test
     public void nullOnNullTest() {
@@ -53,10 +56,9 @@ public class CommandParserTest {
 
         Executable actual = commandParser.parse(inStmts).get(0);
         Class<?> actualBinaryClass = actual.getBinary().getClass();
-        String[] actualArgs = actual.getArgs().toArray(String[]::new);
+        String[] actualArgs = actual.getArgs();
 
-        //TODO: proper BuiltInCmd after CR filling
-        Class<?> expectedBinaryClass = ExternalCmd.class;
+        Class<?> expectedBinaryClass = Echo.class;
         String[] expectedArgs = new String[]{"abc"};
 
         assertEquals(expectedBinaryClass, actualBinaryClass);
@@ -74,14 +76,18 @@ public class CommandParserTest {
         List<LambdaStmt> inStmts = Collections.singletonList(inStmt);
 
         Executable actual = commandParser.parse(inStmts).get(0);
-        Class<?> actualBinaryClass = actual.getBinary().getClass();
-        String[] actualArgs = actual.getArgs().toArray(String[]::new);
 
-        //TODO: check varName == x after varName pass to AssignmentCmd
+        Class<?> actualBinaryClass = actual.getBinary().getClass();
         Class<?> expectedBinaryClass = AssignmentCmd.class;
+        assertEquals(expectedBinaryClass, actualBinaryClass);
+
+        String actualVariable = ((AssignmentCmd) actual.getBinary()).getVariableName();
+        String[] actualArgs = actual.getArgs();
+
+        String expectedVaribale = "x";
         String[] expectedArgs = new String[]{"abc"};
 
-        assertEquals(expectedBinaryClass, actualBinaryClass);
+        assertEquals(expectedVaribale, actualVariable);
         assertArrayEquals(expectedArgs, actualArgs);
     }
 
@@ -96,16 +102,20 @@ public class CommandParserTest {
         List<LambdaStmt> inStmts = Collections.singletonList(inStmt);
 
         Executable actual = commandParser.parse(inStmts).get(0);
-        Class<?> actualBinaryClass = actual.getBinary().getClass();
-        String[] actualArgs = actual.getArgs().toArray(String[]::new);
 
-        //TODO: check varName == x after varName pass to AssignmentCmd
+        Class<?> actualBinaryClass = actual.getBinary().getClass();
         Class<?> expectedBinaryClass = AssignmentCmd.class;
+        assertEquals(expectedBinaryClass, actualBinaryClass);
+
+        String actualVariable = ((AssignmentCmd) actual.getBinary()).getVariableName();
+        String[] actualArgs = actual.getArgs();
+
+        String expectedVaribale = "x";
         // TODO: actually, bash would interpret def as a separate cmd.
         //  NinB views it as an arg, for now
         String[] expectedArgs = new String[]{"abc", "def"};
 
-        assertEquals(expectedBinaryClass, actualBinaryClass);
+        assertEquals(expectedVaribale, actualVariable);
         assertArrayEquals(expectedArgs, actualArgs);
     }
 
@@ -121,10 +131,9 @@ public class CommandParserTest {
 
         Executable actual = commandParser.parse(inStmts).get(0);
         Class<?> actualBinaryClass = actual.getBinary().getClass();
-        String[] actualArgs = actual.getArgs().toArray(String[]::new);
+        String[] actualArgs = actual.getArgs();
 
-        //TODO: proper BuiltInCmd after CR filling
-        Class<?> expectedBinaryClass = ExternalCmd.class;
+        Class<?> expectedBinaryClass = Cat.class;
         String[] expectedArgs = new String[]{"abc ff=def", "amd"};
 
         assertEquals(expectedBinaryClass, actualBinaryClass);
@@ -143,10 +152,9 @@ public class CommandParserTest {
 
         Executable actual = commandParser.parse(inStmts).get(0);
         Class<?> actualBinaryClass = actual.getBinary().getClass();
-        String[] actualArgs = actual.getArgs().toArray(String[]::new);
+        String[] actualArgs = actual.getArgs();
 
-        //TODO: proper BuiltInCmd after CR filling
-        Class<?> expectedBinaryClass = ExternalCmd.class;
+        Class<?> expectedBinaryClass = Cat.class;
         String[] expectedArgs = new String[]{"abc ff=def ", "amd"};
 
         assertEquals(expectedBinaryClass, actualBinaryClass);
@@ -164,10 +172,9 @@ public class CommandParserTest {
 
         Executable actual = commandParser.parse(inStmts).get(0);
         Class<?> actualBinaryClass = actual.getBinary().getClass();
-        String[] actualArgs = actual.getArgs().toArray(String[]::new);
+        String[] actualArgs = actual.getArgs();
 
-        //TODO: proper BuiltInCmd after CR filling
-        Class<?> expectedBinaryClass = ExternalCmd.class;
+        Class<?> expectedBinaryClass = Echo.class;
         String[] expectedArgs = new String[]{"abc"};
 
         assertEquals(expectedBinaryClass, actualBinaryClass);
@@ -185,10 +192,9 @@ public class CommandParserTest {
 
         Executable actual = commandParser.parse(inStmts).get(0);
         Class<?> actualBinaryClass = actual.getBinary().getClass();
-        String[] actualArgs = actual.getArgs().toArray(String[]::new);
+        String[] actualArgs = actual.getArgs();
 
-        //TODO: proper BuiltInCmd after CR filling
-        Class<?> expectedBinaryClass = ExternalCmd.class;
+        Class<?> expectedBinaryClass = Echo.class;
         String[] expectedArgs = new String[]{"abc"};
 
         assertEquals(expectedBinaryClass, actualBinaryClass);
@@ -205,14 +211,18 @@ public class CommandParserTest {
         List<LambdaStmt> inStmts = Collections.singletonList(inStmt);
 
         Executable actual = commandParser.parse(inStmts).get(0);
+
         Class<?> actualBinaryClass = actual.getBinary().getClass();
-        String[] actualArgs = actual.getArgs().toArray(String[]::new);
-
-        //TODO: proper BuiltInCmd after CR filling
         Class<?> expectedBinaryClass = ExternalCmd.class;
-        String[] expectedArgs = new String[0];
-
         assertEquals(expectedBinaryClass, actualBinaryClass);
+
+        String[] actualArgs = actual.getArgs();
+        String actualCommand = ((ExternalCmd)actual.getBinary()).getCommand();
+
+        String[] expectedArgs = new String[0];
+        String expectedCommand = "x=3";
+
+        assertEquals(expectedCommand, actualCommand);
         assertArrayEquals(expectedArgs, actualArgs);
     }
 
@@ -226,14 +236,18 @@ public class CommandParserTest {
         List<LambdaStmt> inStmts = Collections.singletonList(inStmt);
 
         Executable actual = commandParser.parse(inStmts).get(0);
+
         Class<?> actualBinaryClass = actual.getBinary().getClass();
-        String[] actualArgs = actual.getArgs().toArray(String[]::new);
-
-        //TODO: proper BuiltInCmd after CR filling
         Class<?> expectedBinaryClass = ExternalCmd.class;
-        String[] expectedArgs = new String[0];
-
         assertEquals(expectedBinaryClass, actualBinaryClass);
+
+        String[] actualArgs = actual.getArgs();
+        String actualCommand = ((ExternalCmd)actual.getBinary()).getCommand();
+
+        String[] expectedArgs = new String[0];
+        String expectedCommand = "x=3";
+
+        assertEquals(expectedCommand, actualCommand);
         assertArrayEquals(expectedArgs, actualArgs);
     }
 
@@ -247,10 +261,9 @@ public class CommandParserTest {
 
         Executable actual = commandParser.parse(inStmts).get(0);
         Class<?> actualBinaryClass = actual.getBinary().getClass();
-        String[] actualArgs = actual.getArgs().toArray(String[]::new);
+        String[] actualArgs = actual.getArgs();
 
-        //TODO: proper BuiltInCmd after CR filling
-        Class<?> expectedBinaryClass = ExternalCmd.class;
+        Class<?> expectedBinaryClass = Echo.class;
         String[] expectedArgs = new String[]{"=3"};
 
         assertEquals(expectedBinaryClass, actualBinaryClass);

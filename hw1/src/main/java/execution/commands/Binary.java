@@ -1,5 +1,7 @@
 package execution.commands;
 
-public interface Binary {
+import execution.ResultCode;
 
+public interface Binary {
+    ResultCode execute(String[] args, StringBuilder buffer);
 }

@@ -1,5 +1,10 @@
 package execution.commands;
 
-public class Cat implements BuiltInCmd {
+import execution.ResultCode;
 
+public class Cat implements BuiltInCmd {
+    @Override
+    public ResultCode execute(String[] args, StringBuilder buffer) {
+        throw new UnsupportedOperationException();
+    }
 }
