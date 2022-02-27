@@ -54,7 +54,7 @@ public class CommandParserTest {
 
         Executable actual = commandParser.parse(inStmts).get(0);
         Class<?> actualBinaryClass = actual.getBinary().getClass();
-        String[] actualArgs = actual.getArgs().toArray(String[]::new);
+        String[] actualArgs = actual.getArgs();
 
         //TODO: proper BuiltInCmd after CR filling
         Class<?> expectedBinaryClass = ExternalCmd.class;
@@ -81,7 +81,7 @@ public class CommandParserTest {
         assertEquals(expectedBinaryClass, actualBinaryClass);
 
         String actualVariable = ((AssignmentCmd) actual.getBinary()).getVariableName();
-        String[] actualArgs = actual.getArgs().toArray(String[]::new);
+        String[] actualArgs = actual.getArgs();
 
         String expectedVaribale = "x";
         String[] expectedArgs = new String[]{"abc"};
@@ -107,7 +107,7 @@ public class CommandParserTest {
         assertEquals(expectedBinaryClass, actualBinaryClass);
 
         String actualVariable = ((AssignmentCmd) actual.getBinary()).getVariableName();
-        String[] actualArgs = actual.getArgs().toArray(String[]::new);
+        String[] actualArgs = actual.getArgs();
 
         String expectedVaribale = "x";
         // TODO: actually, bash would interpret def as a separate cmd.
@@ -130,7 +130,7 @@ public class CommandParserTest {
 
         Executable actual = commandParser.parse(inStmts).get(0);
         Class<?> actualBinaryClass = actual.getBinary().getClass();
-        String[] actualArgs = actual.getArgs().toArray(String[]::new);
+        String[] actualArgs = actual.getArgs();
 
         //TODO: proper BuiltInCmd after CR filling
         Class<?> expectedBinaryClass = ExternalCmd.class;
@@ -152,7 +152,7 @@ public class CommandParserTest {
 
         Executable actual = commandParser.parse(inStmts).get(0);
         Class<?> actualBinaryClass = actual.getBinary().getClass();
-        String[] actualArgs = actual.getArgs().toArray(String[]::new);
+        String[] actualArgs = actual.getArgs();
 
         //TODO: proper BuiltInCmd after CR filling
         Class<?> expectedBinaryClass = ExternalCmd.class;
@@ -173,7 +173,7 @@ public class CommandParserTest {
 
         Executable actual = commandParser.parse(inStmts).get(0);
         Class<?> actualBinaryClass = actual.getBinary().getClass();
-        String[] actualArgs = actual.getArgs().toArray(String[]::new);
+        String[] actualArgs = actual.getArgs();
 
         //TODO: proper BuiltInCmd after CR filling
         Class<?> expectedBinaryClass = ExternalCmd.class;
@@ -194,7 +194,7 @@ public class CommandParserTest {
 
         Executable actual = commandParser.parse(inStmts).get(0);
         Class<?> actualBinaryClass = actual.getBinary().getClass();
-        String[] actualArgs = actual.getArgs().toArray(String[]::new);
+        String[] actualArgs = actual.getArgs();
 
         //TODO: proper BuiltInCmd after CR filling
         Class<?> expectedBinaryClass = ExternalCmd.class;
@@ -215,7 +215,7 @@ public class CommandParserTest {
 
         Executable actual = commandParser.parse(inStmts).get(0);
         Class<?> actualBinaryClass = actual.getBinary().getClass();
-        String[] actualArgs = actual.getArgs().toArray(String[]::new);
+        String[] actualArgs = actual.getArgs();
 
         //TODO: proper BuiltInCmd after CR filling
         Class<?> expectedBinaryClass = ExternalCmd.class;
@@ -236,7 +236,7 @@ public class CommandParserTest {
 
         Executable actual = commandParser.parse(inStmts).get(0);
         Class<?> actualBinaryClass = actual.getBinary().getClass();
-        String[] actualArgs = actual.getArgs().toArray(String[]::new);
+        String[] actualArgs = actual.getArgs();
 
         //TODO: proper BuiltInCmd after CR filling
         Class<?> expectedBinaryClass = ExternalCmd.class;
@@ -256,7 +256,7 @@ public class CommandParserTest {
 
         Executable actual = commandParser.parse(inStmts).get(0);
         Class<?> actualBinaryClass = actual.getBinary().getClass();
-        String[] actualArgs = actual.getArgs().toArray(String[]::new);
+        String[] actualArgs = actual.getArgs();
 
         //TODO: proper BuiltInCmd after CR filling
         Class<?> expectedBinaryClass = ExternalCmd.class;

@@ -4,6 +4,12 @@ public class ResultCode {
     private int returnCode;
     private boolean exitSignal;
 
+    private static ResultCode okCode = new ResultCode(0, false);
+
+    public static ResultCode okCode() {
+        return okCode;
+    }
+
     public ResultCode(int returnCode, boolean exitSignal) {
         this.returnCode = returnCode;
         this.exitSignal = exitSignal;

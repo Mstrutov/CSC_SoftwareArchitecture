@@ -4,7 +4,7 @@ import execution.ResultCode;
 
 public class Echo implements BuiltInCmd {
     @Override
-    public ResultCode execute(String[] args) {
+    public ResultCode execute(String[] args, String bufferOut) {
         throw new UnsupportedOperationException();
     }
 }

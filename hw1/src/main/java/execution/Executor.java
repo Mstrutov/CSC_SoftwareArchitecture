@@ -3,10 +3,24 @@ package execution;
 import java.util.List;
 
 public class Executor {
-    private final String buffer = ""; // TODO: Executables должны иметь доступ к buffer. Либо execute() возвращать String
+    private final String buffer = "";
 
     ResultCode execute(List<Executable> inStmts) {
-        throw new UnsupportedOperationException();
+        if (inStmts == null || inStmts.size() == 0) {
+            return ResultCode.okCode();
+        }
+
+        if (inStmts.size() > 1) {
+            throw new UnsupportedOperationException();
+        }
+
+        for (Executable inStmt : inStmts) {
+            inStmt.execute(buffer);
+        }
+
+        System.out.println(buffer);
+
+        return ResultCode.okCode();
     }
 
     String getBuffer() {

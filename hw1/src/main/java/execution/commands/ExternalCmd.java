@@ -4,7 +4,7 @@ import execution.ResultCode;
 
 public class ExternalCmd implements Binary {
     @Override
-    public ResultCode execute(String[] args) {
+    public ResultCode execute(String[] args, String bufferOut) {
         throw new UnsupportedOperationException();
     }
 }

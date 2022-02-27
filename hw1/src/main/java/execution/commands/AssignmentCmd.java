@@ -17,12 +17,12 @@ public class AssignmentCmd implements Binary {
     }
 
     @Override
-    public ResultCode execute(String[] args) {
+    public ResultCode execute(String[] args, String bufferOut) {
         String variableValue = "";
         if (args != null && args.length > 0) {
             environment.setValue(variableName, variableValue);
         }
 
-        return new ResultCode(0, false);
+        return ResultCode.okCode();
     }
 }

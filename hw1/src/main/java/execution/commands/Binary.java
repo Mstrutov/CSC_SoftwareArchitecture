@@ -3,5 +3,5 @@ package execution.commands;
 import execution.ResultCode;
 
 public interface Binary {
-    ResultCode execute(String[] args);
+    ResultCode execute(String[] args, String bufferOut);
 }
