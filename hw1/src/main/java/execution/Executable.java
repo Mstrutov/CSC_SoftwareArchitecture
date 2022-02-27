@@ -23,7 +23,7 @@ public class Executable {
         return args;
     }
 
-    public ResultCode execute(String buffer) {
+    public ResultCode execute(StringBuilder buffer) {
         binary.execute(args, buffer);
 
         throw new UnsupportedOperationException();

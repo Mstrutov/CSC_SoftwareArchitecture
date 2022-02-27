@@ -17,7 +17,7 @@ public class AssignmentCmd implements Binary {
     }
 
     @Override
-    public ResultCode execute(String[] args, String bufferOut) {
+    public ResultCode execute(String[] args, StringBuilder buffer) {
         String variableValue = "";
         if (args != null && args.length > 0) {
             environment.setValue(variableName, variableValue);

@@ -3,7 +3,7 @@ package execution;
 import java.util.List;
 
 public class Executor {
-    private final String buffer = "";
+    private final StringBuilder buffer = new StringBuilder();
 
     ResultCode execute(List<Executable> inStmts) {
         if (inStmts == null || inStmts.size() == 0) {
@@ -24,6 +24,6 @@ public class Executor {
     }
 
     String getBuffer() {
-        return buffer;
+        return buffer.toString();
     }
 }

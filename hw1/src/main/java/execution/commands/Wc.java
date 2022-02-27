@@ -4,7 +4,7 @@ import execution.ResultCode;
 
 public class Wc implements BuiltInCmd {
     @Override
-    public ResultCode execute(String[] args, String bufferOut) {
+    public ResultCode execute(String[] args, StringBuilder buffer) {
         throw new UnsupportedOperationException();
     }
 }
