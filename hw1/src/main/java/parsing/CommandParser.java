@@ -93,8 +93,7 @@ public class CommandParser {
     private Binary resolveBinary(String binaryString) {
         BuiltInCmd builtInCmd = commandRegistry.getCmd(binaryString);
 
-        // TODO: pass binaryString to ExternalCmd
-        return Objects.requireNonNullElseGet(builtInCmd, ExternalCmd::new);
+        return Objects.requireNonNullElseGet(builtInCmd, () -> new ExternalCmd(binaryString));
     }
 
     // TODO: consider Character.isWhitespace()

@@ -211,13 +211,18 @@ public class CommandParserTest {
         List<LambdaStmt> inStmts = Collections.singletonList(inStmt);
 
         Executable actual = commandParser.parse(inStmts).get(0);
+
         Class<?> actualBinaryClass = actual.getBinary().getClass();
-        String[] actualArgs = actual.getArgs();
-
         Class<?> expectedBinaryClass = ExternalCmd.class;
-        String[] expectedArgs = new String[0];
-
         assertEquals(expectedBinaryClass, actualBinaryClass);
+
+        String[] actualArgs = actual.getArgs();
+        String actualCommand = ((ExternalCmd)actual.getBinary()).getCommand();
+
+        String[] expectedArgs = new String[0];
+        String expectedCommand = "x=3";
+
+        assertEquals(expectedCommand, actualCommand);
         assertArrayEquals(expectedArgs, actualArgs);
     }
 
@@ -231,13 +236,18 @@ public class CommandParserTest {
         List<LambdaStmt> inStmts = Collections.singletonList(inStmt);
 
         Executable actual = commandParser.parse(inStmts).get(0);
+
         Class<?> actualBinaryClass = actual.getBinary().getClass();
-        String[] actualArgs = actual.getArgs();
-
         Class<?> expectedBinaryClass = ExternalCmd.class;
-        String[] expectedArgs = new String[0];
-
         assertEquals(expectedBinaryClass, actualBinaryClass);
+
+        String[] actualArgs = actual.getArgs();
+        String actualCommand = ((ExternalCmd)actual.getBinary()).getCommand();
+
+        String[] expectedArgs = new String[0];
+        String expectedCommand = "x=3";
+
+        assertEquals(expectedCommand, actualCommand);
         assertArrayEquals(expectedArgs, actualArgs);
     }
 
