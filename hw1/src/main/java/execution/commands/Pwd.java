@@ -1,5 +1,10 @@
 package execution.commands;
 
-public class Pwd implements BuiltInCmd {
+import execution.ResultCode;
 
+public class Pwd implements BuiltInCmd {
+    @Override
+    public ResultCode execute(String[] args) {
+        throw new UnsupportedOperationException();
+    }
 }

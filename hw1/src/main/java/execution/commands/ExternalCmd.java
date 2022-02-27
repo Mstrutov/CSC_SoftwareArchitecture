@@ -1,5 +1,10 @@
 package execution.commands;
 
-public class ExternalCmd implements Binary {
+import execution.ResultCode;
 
+public class ExternalCmd implements Binary {
+    @Override
+    public ResultCode execute(String[] args) {
+        throw new UnsupportedOperationException();
+    }
 }

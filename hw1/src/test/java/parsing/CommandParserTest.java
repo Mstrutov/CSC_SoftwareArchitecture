@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import environment.CommandRegistry;
+import environment.Environment;
 import execution.Executable;
 import execution.commands.AssignmentCmd;
 import execution.commands.ExternalCmd;
@@ -22,7 +23,7 @@ import parsing.statements.parsed.WeakQuotedString;
 
 public class CommandParserTest {
 
-    private final CommandParser commandParser = new CommandParser(new CommandRegistry());
+    private final CommandParser commandParser = new CommandParser(new CommandRegistry(), new Environment());
 
     @Test
     public void nullOnNullTest() {
@@ -74,14 +75,18 @@ public class CommandParserTest {
         List<LambdaStmt> inStmts = Collections.singletonList(inStmt);
 
         Executable actual = commandParser.parse(inStmts).get(0);
+
         Class<?> actualBinaryClass = actual.getBinary().getClass();
+        Class<?> expectedBinaryClass = AssignmentCmd.class;
+        assertEquals(expectedBinaryClass, actualBinaryClass);
+
+        String actualVariable = ((AssignmentCmd) actual.getBinary()).getVariableName();
         String[] actualArgs = actual.getArgs().toArray(String[]::new);
 
-        //TODO: check varName == x after varName pass to AssignmentCmd
-        Class<?> expectedBinaryClass = AssignmentCmd.class;
+        String expectedVaribale = "x";
         String[] expectedArgs = new String[]{"abc"};
 
-        assertEquals(expectedBinaryClass, actualBinaryClass);
+        assertEquals(expectedVaribale, actualVariable);
         assertArrayEquals(expectedArgs, actualArgs);
     }
 
@@ -96,16 +101,20 @@ public class CommandParserTest {
         List<LambdaStmt> inStmts = Collections.singletonList(inStmt);
 
         Executable actual = commandParser.parse(inStmts).get(0);
+
         Class<?> actualBinaryClass = actual.getBinary().getClass();
+        Class<?> expectedBinaryClass = AssignmentCmd.class;
+        assertEquals(expectedBinaryClass, actualBinaryClass);
+
+        String actualVariable = ((AssignmentCmd) actual.getBinary()).getVariableName();
         String[] actualArgs = actual.getArgs().toArray(String[]::new);
 
-        //TODO: check varName == x after varName pass to AssignmentCmd
-        Class<?> expectedBinaryClass = AssignmentCmd.class;
+        String expectedVaribale = "x";
         // TODO: actually, bash would interpret def as a separate cmd.
         //  NinB views it as an arg, for now
         String[] expectedArgs = new String[]{"abc", "def"};
 
-        assertEquals(expectedBinaryClass, actualBinaryClass);
+        assertEquals(expectedVaribale, actualVariable);
         assertArrayEquals(expectedArgs, actualArgs);
     }
 
