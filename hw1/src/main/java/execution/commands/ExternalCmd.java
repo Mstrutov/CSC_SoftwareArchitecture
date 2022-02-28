@@ -1,6 +1,6 @@
-package main.java.execution.commands;
+package execution.commands;
 
-import main.java.execution.ResultCode;
+import execution.ResultCode;
 
 public class ExternalCmd implements Binary {
     private final String command;

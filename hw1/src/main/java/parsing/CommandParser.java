@@ -1,21 +1,20 @@
-package main.java.parsing;
+package parsing;
 
-import main.java.environment.CommandRegistry;
-import main.java.environment.Environment;
-import main.java.execution.Executable;
-import main.java.execution.commands.AssignmentCmd;
-import main.java.execution.commands.Binary;
-import main.java.execution.commands.BuiltInCmd;
-import main.java.execution.commands.ExternalCmd;
+import environment.CommandRegistry;
+import environment.Environment;
+import execution.Executable;
+import execution.commands.AssignmentCmd;
+import execution.commands.Binary;
+import execution.commands.BuiltInCmd;
+import execution.commands.ExternalCmd;
+import parsing.statements.Stmt;
+import parsing.statements.parsed.AssignmentOperator;
+import parsing.statements.parsed.EscapedString;
+import parsing.statements.parsed.ParsedString;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import main.java.parsing.statements.Stmt;
-import main.java.parsing.statements.parsed.AssignmentOperator;
-import main.java.parsing.statements.parsed.EscapedString;
-import main.java.parsing.statements.parsed.ParsedString;
-import main.java.parsing.statements.parsed.RawString;
 
 public class CommandParser {
     private final CommandRegistry commandRegistry;
@@ -59,10 +58,9 @@ public class CommandParser {
                     currentString.append('=');
                 }
             } else if (parsedString instanceof EscapedString) {
-                // TODO: move getString() up to ParsedString
-                currentString.append(((EscapedString) parsedString).getString());
+                currentString.append(parsedString.getString());
             } else {
-                String rawString = ((RawString) parsedString).getString();
+                String rawString = parsedString.getString();
 
                 for (char ch : rawString.toCharArray()) { // Horrible nested stuff, I know...
                     if (isSpaceSymbol(ch)) {

@@ -1,11 +1,11 @@
-package main.java.parsing;
+package parsing;
 
-import main.java.parsing.statements.QuotedStmt;
-import main.java.parsing.statements.RawStmt;
-import main.java.parsing.statements.parsed.FullQuotedString;
-import main.java.parsing.statements.parsed.QuoteProcessedString;
-import main.java.parsing.statements.parsed.RawString;
-import main.java.parsing.statements.parsed.WeakQuotedString;
+import parsing.statements.QuotedStmt;
+import parsing.statements.RawStmt;
+import parsing.statements.parsed.FullQuotedString;
+import parsing.statements.parsed.QuoteProcessedString;
+import parsing.statements.parsed.RawString;
+import parsing.statements.parsed.WeakQuotedString;
 
 import java.util.ArrayList;
 import java.util.List;

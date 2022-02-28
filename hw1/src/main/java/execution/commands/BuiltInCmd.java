@@ -1,4 +1,4 @@
-package main.java.execution.commands;
+package execution.commands;
 
 public interface BuiltInCmd extends Binary {
 

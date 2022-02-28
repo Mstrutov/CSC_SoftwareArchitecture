@@ -1,6 +1,7 @@
-package main.java.execution;
+package execution;
 
-import main.java.execution.commands.Binary;
+import execution.commands.Binary;
+
 import java.util.List;
 
 public class Executable {

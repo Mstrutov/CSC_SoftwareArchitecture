@@ -1,6 +1,6 @@
-package main.java.parsing.statements;
+package parsing.statements;
 
-import main.java.parsing.statements.parsed.QuoteProcessedString;
+import parsing.statements.parsed.QuoteProcessedString;
 
 import java.util.ArrayList;
 import java.util.List;

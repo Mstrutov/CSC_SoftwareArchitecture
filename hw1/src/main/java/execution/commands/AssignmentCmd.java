@@ -1,7 +1,7 @@
-package main.java.execution.commands;
+package execution.commands;
 
-import main.java.environment.Environment;
-import main.java.execution.ResultCode;
+import environment.Environment;
+import execution.ResultCode;
 
 public class AssignmentCmd implements Binary {
     private final String variableName;

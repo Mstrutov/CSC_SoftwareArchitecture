@@ -1,30 +1,26 @@
-package test.java.parsing;
+package parsing;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import environment.CommandRegistry;
+import environment.Environment;
+import execution.Executable;
+import execution.commands.Cat;
+import execution.commands.Echo;
+import execution.commands.ExternalCmd;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import parsing.statements.Stmt;
+import parsing.statements.parsed.FullQuotedString;
+import parsing.statements.parsed.RawString;
+import parsing.statements.parsed.WeakQuotedString;
 
-import main.java.environment.CommandRegistry;
-import main.java.environment.Environment;
-import main.java.execution.Executable;
-import main.java.execution.commands.AssignmentCmd;
-import main.java.execution.commands.Cat;
-import main.java.execution.commands.Echo;
-import main.java.execution.commands.ExternalCmd;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import main.java.parsing.CommandParser;
-import main.java.parsing.statements.Stmt;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-import main.java.parsing.statements.Stmt;
-import main.java.parsing.statements.parsed.AssignmentOperator;
-import main.java.parsing.statements.parsed.FullQuotedString;
-import main.java.parsing.statements.parsed.RawString;
-import main.java.parsing.statements.parsed.WeakQuotedString;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class CommandParserTest {
 
