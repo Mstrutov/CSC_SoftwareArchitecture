@@ -10,7 +10,15 @@ import parsing.statements.parsed.WeakQuotedString;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class that processes quoted arguments. Wraps arguments in corresponding classes.
+ */
 public class QuoteParser {
+    /**
+     * Parsing method. Parses data and wraps it with {@code FullQuotedString}, {@code WeakQuotedString} or {@code RawString}.
+     * @param rawStmt Raw String
+     * @return Input with processed quotes
+     */
     public QuotedStmt parse(RawStmt rawStmt) {
         List<QuoteProcessedString> command = new ArrayList<>();
 
