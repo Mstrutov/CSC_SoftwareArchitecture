@@ -1,4 +1,27 @@
 
+# Интерпретатор командной строки NinB
+
+## Сборка и исполнение интерпретатора
+
+Клонировать исходники и собрать проект:
+```
+git clone https://github.com/Mstrutov/CSC_SoftwareArchitecture
+git checkout hw02
+cd hw1/
+./gradlew jar
+```
+В результате в `build/dir` будет сгенерирован jar-файл, который можно запустить: 
+```
+cd /path/to/CSC_SoftwareArchitecture/hw1/build/libs
+java -jar hw1.jar
+```
+### Работа с интерпретатором
+
+1. Введите команду, например, `echo Hello, World!`
+2. При нажатии `enter` команда будет исполнена, будет выведен результат и код её исполнения. 
+
+## Описание архитектуры
+
 1. NinB (NinB is not Bash) реализует основную логику: инициализация `Environment`, компонент (`Reader`, …, `Executor`) и сам цикл.
   Цикл выглядит примерно так:
   ```
