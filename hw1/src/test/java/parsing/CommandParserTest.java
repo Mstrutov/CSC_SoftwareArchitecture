@@ -3,6 +3,7 @@ package parsing;
 import environment.CommandRegistry;
 import environment.Environment;
 import execution.Executable;
+import execution.commands.AssignmentCmd;
 import execution.commands.Cat;
 import execution.commands.Echo;
 import execution.commands.ExternalCmd;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import parsing.statements.Stmt;
+import parsing.statements.parsed.AssignmentOperator;
 import parsing.statements.parsed.FullQuotedString;
 import parsing.statements.parsed.RawString;
 import parsing.statements.parsed.WeakQuotedString;
@@ -65,7 +67,7 @@ public class CommandParserTest {
     }
 
     //x=abc
-    /*@Test
+    @Test
     public void parsesAssignmentOperatorNoSpaceTest() {
         Stmt inStmt = new Stmt();
         inStmt.addPart(new RawString("x"));
@@ -88,10 +90,10 @@ public class CommandParserTest {
 
         assertEquals(expectedVaribale, actualVariable);
         assertArrayEquals(expectedArgs, actualArgs);
-    }*/
+    }
 
     //x=abc def
-    /*@Test
+    @Test
     public void parsesAssignmentOperatorSingleSpaceTest() {
         Stmt inStmt = new Stmt();
         inStmt.addPart(new RawString("x"));
@@ -116,7 +118,7 @@ public class CommandParserTest {
 
         assertEquals(expectedVaribale, actualVariable);
         assertArrayEquals(expectedArgs, actualArgs);
-    }*/
+    }
 
     //cat 'abc ff=def' amd
     @Test
