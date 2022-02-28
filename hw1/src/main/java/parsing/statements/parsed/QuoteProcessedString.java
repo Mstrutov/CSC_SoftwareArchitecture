@@ -1,5 +1,8 @@
 package parsing.statements.parsed;
 
+/**
+ * String with parsed quotes
+ */
 // TODO: ParsedString
 public abstract class QuoteProcessedString implements ParsedString {
     private final String str;

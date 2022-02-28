@@ -8,6 +8,7 @@ public class RawStmt {
 
     /**
      * Constructor of {@code RawStmt}. Collects the given String.
+     *
      * @param str - String to store.
      */
     public RawStmt(String str) {
@@ -16,6 +17,7 @@ public class RawStmt {
 
     /**
      * Getter of {@code RawStmt}.
+     *
      * @return Stored String
      */
     public String getString() {

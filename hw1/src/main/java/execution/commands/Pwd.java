@@ -1,9 +1,10 @@
 package execution.commands;
 
 import execution.ResultCode;
-
 import java.io.File;
-
+/**
+ * Pwd linux command class.
+ */
 public class Pwd implements BuiltInCmd {
     @Override
     public ResultCode execute(String[] args, StringBuilder buffer) {

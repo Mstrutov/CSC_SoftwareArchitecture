@@ -16,15 +16,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import parsing.statements.Stmt;
+import parsing.statements.parsed.AssignmentOperator;
+import parsing.statements.parsed.EscapedString;
+import parsing.statements.parsed.ParsedString;
+import parsing.statements.parsed.RawString;
+
+/**
+ * Class that parse commands, recognise them and wraps in command classes.
+ */
 public class CommandParser {
     private final CommandRegistry commandRegistry;
     private final Environment environment;
 
+    /**
+     * {@code CommandParser} constructor
+     *
+     * @param commandRegistry Command dictionary
+     * @param environment     Environment with initialised variables
+     */
     public CommandParser(CommandRegistry commandRegistry, Environment environment) {
         this.commandRegistry = commandRegistry;
         this.environment = environment;
     }
 
+    /**
+     * Main method of this class. Parses data and wraps it with {@code Executable}
+     *
+     * @param inStmts Parsed data with substitutions
+     * @return List of commands wrapped with classes
+     */
     public List<Executable> parse(List<Stmt> inStmts) {
         if (inStmts == null) {
             return null;

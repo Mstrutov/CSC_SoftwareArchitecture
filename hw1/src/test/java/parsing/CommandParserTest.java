@@ -218,7 +218,7 @@ public class CommandParserTest {
         assertEquals(expectedBinaryClass, actualBinaryClass);
 
         String[] actualArgs = actual.getArgs();
-        String actualCommand = ((ExternalCmd)actual.getBinary()).getCommand();
+        String actualCommand = ((ExternalCmd) actual.getBinary()).getCommand();
 
         String[] expectedArgs = new String[0];
         String expectedCommand = "x=3";
@@ -243,7 +243,7 @@ public class CommandParserTest {
         assertEquals(expectedBinaryClass, actualBinaryClass);
 
         String[] actualArgs = actual.getArgs();
-        String actualCommand = ((ExternalCmd)actual.getBinary()).getCommand();
+        String actualCommand = ((ExternalCmd) actual.getBinary()).getCommand();
 
         String[] expectedArgs = new String[0];
         String expectedCommand = "x=3";
