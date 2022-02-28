@@ -1,4 +1,4 @@
-package main.java.parsing.statements.parsed;
+package parsing.statements.parsed;
 
 public abstract class EscapedString extends QuoteProcessedString {
     public EscapedString(String str) {

@@ -1,18 +1,16 @@
-package main.java;
-
-import main.java.environment.CommandRegistry;
-import main.java.environment.Environment;
-import main.java.execution.Executable;
-import main.java.execution.Executor;
-import main.java.execution.ResultCode;
-import main.java.parsing.CommandParser;
-import main.java.parsing.ControlParser;
-import main.java.parsing.QuoteParser;
-import main.java.parsing.Reader;
-import main.java.parsing.statements.LambdaStmt;
-import main.java.parsing.statements.QuotedStmt;
-import main.java.parsing.statements.RawStmt;
-import main.java.parsing.statements.Stmt;
+import environment.CommandRegistry;
+import environment.Environment;
+import execution.Executable;
+import execution.Executor;
+import execution.ResultCode;
+import parsing.CommandParser;
+import parsing.ControlParser;
+import parsing.QuoteParser;
+import parsing.Reader;
+import parsing.statements.LambdaStmt;
+import parsing.statements.QuotedStmt;
+import parsing.statements.RawStmt;
+import parsing.statements.Stmt;
 
 import java.util.List;
 import java.util.stream.Collectors;

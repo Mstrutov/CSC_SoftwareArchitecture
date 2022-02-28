@@ -1,4 +1,4 @@
-package main.java.parsing.statements.parsed;
+package parsing.statements.parsed;
 
 // TODO: ParsedString
 public abstract class QuoteProcessedString implements ParsedString {
@@ -7,6 +7,7 @@ public abstract class QuoteProcessedString implements ParsedString {
         this.str = str;
     }
 
+    @Override
     public String getString() {
         return str;
     }

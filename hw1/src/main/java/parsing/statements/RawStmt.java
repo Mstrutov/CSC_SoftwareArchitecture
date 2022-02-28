@@ -1,4 +1,4 @@
-package main.java.parsing.statements;
+package parsing.statements;
 
 public class RawStmt {
     private final String str;

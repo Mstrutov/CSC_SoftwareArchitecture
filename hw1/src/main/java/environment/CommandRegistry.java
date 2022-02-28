@@ -1,11 +1,11 @@
-package main.java.environment;
+package environment;
 
-import main.java.execution.commands.BuiltInCmd;
-import main.java.execution.commands.Cat;
-import main.java.execution.commands.Echo;
-import main.java.execution.commands.Exit;
-import main.java.execution.commands.Pwd;
-import main.java.execution.commands.Wc;
+import execution.commands.BuiltInCmd;
+import execution.commands.Cat;
+import execution.commands.Echo;
+import execution.commands.Exit;
+import execution.commands.Pwd;
+import execution.commands.Wc;
 
 import java.util.HashMap;
 import java.util.Map;

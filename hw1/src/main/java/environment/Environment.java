@@ -1,4 +1,4 @@
-package main.java.environment;
+package environment;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,8 +1,8 @@
-package main.java.parsing;
+package parsing;
 
-import main.java.parsing.statements.LambdaStmt;
-import main.java.parsing.statements.QuotedStmt;
-import main.java.parsing.statements.parsed.QuoteProcessedString;
+import parsing.statements.LambdaStmt;
+import parsing.statements.QuotedStmt;
+import parsing.statements.parsed.QuoteProcessedString;
 
 import java.util.ArrayList;
 import java.util.Collections;

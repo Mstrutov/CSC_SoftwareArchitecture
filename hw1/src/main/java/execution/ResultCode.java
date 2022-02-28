@@ -1,4 +1,4 @@
-package main.java.execution;
+package execution;
 
 public class ResultCode {
     private int returnCode;
