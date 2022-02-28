@@ -5,4 +5,10 @@ public class AssignmentOperator implements ParsedString {
     public String getString() {
         return "=";
     }
+
+    static private final AssignmentOperator assignmentOperator = new AssignmentOperator();
+
+    static public AssignmentOperator get() {
+        return assignmentOperator;
+    }
 }

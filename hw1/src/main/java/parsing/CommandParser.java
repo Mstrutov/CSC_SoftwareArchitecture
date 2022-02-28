@@ -62,23 +62,16 @@ public class CommandParser {
             } else {
                 String rawString = parsedString.getString();
 
-                for (char ch : rawString.toCharArray()) { // Horrible nested stuff, I know...
+                for (char ch : rawString.toCharArray()) {
                     if (isSpaceSymbol(ch)) {
                         binary = resolve(binary, arguments, currentString);
                     } else {
                         currentString.append(ch);
                     }
                 }
-                binary = resolve(binary, arguments, currentString);
             }
         }
-        if (currentString.length() > 0) {
-            if (binary == null) {
-                binary = resolveBinary(currentString.toString());
-            } else {
-                arguments.add(currentString.toString());
-            }
-        }
+        binary = resolve(binary, arguments, currentString);
 
         return new Executable(binary, arguments);
     }
