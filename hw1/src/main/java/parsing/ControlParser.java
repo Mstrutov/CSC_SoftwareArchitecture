@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Class used to process '=' and '$' operators
+ */
 public class ControlParser {
     public List<LambdaStmt> parse(QuotedStmt quotedStmt) {
         List<ParsedString> command = new ArrayList<>();

@@ -15,7 +15,17 @@ import parsing.statements.Stmt;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The NinB evaluation state engine.  This is the central class in the NinB
+ * application. A {@code NinB} instance holds the evolving compilation and
+ * execution state.
+ */
 public class NinB {
+    /**
+     * Evaluate the input String, including definition and/or execution, if applicable. The input is checked for errors, unless the errors can be deferred , errors will not abort evaluation.
+     * The input should be exactly one command. To break arbitrary input into individual complete snippets, use "quit".
+     * @param args required by java
+     */
     public static void main(String[] args) {
         Reader reader = new Reader(System.in);
         QuoteParser quoteParser = new QuoteParser();
