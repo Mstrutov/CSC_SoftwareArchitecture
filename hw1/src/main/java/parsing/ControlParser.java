@@ -1,5 +1,8 @@
 package parsing;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import parsing.statements.LambdaStmt;
 import parsing.statements.QuotedStmt;
 import parsing.statements.parsed.AssignmentOperator;
@@ -8,14 +11,16 @@ import parsing.statements.parsed.ParsedString;
 import parsing.statements.parsed.QuoteProcessedString;
 import parsing.statements.parsed.RawString;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 /**
  * Class used to process '=' and '$' operators
  */
 public class ControlParser {
+    /**
+     * Parses big command into a bunch of small ones. If the command is not a pipe - list will contain only one element.
+     *
+     * @param quotedStmt Pre-parsed data
+     * @return List of small commands in one big command
+     */
     public List<LambdaStmt> parse(QuotedStmt quotedStmt) {
         List<ParsedString> command = new ArrayList<>();
 

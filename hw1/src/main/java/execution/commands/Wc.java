@@ -1,12 +1,13 @@
 package execution.commands;
 
 import execution.ResultCode;
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-
+/**
+ * Wc linux command class.
+ */
 public class Wc implements BuiltInCmd {
     @Override
     public ResultCode execute(String[] args, StringBuilder buffer) {

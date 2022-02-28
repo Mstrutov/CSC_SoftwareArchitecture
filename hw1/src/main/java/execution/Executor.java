@@ -2,9 +2,18 @@ package execution;
 
 import java.util.List;
 
+/**
+ * Last part of the REPL, class that executes parsed command.
+ */
 public class Executor {
     private StringBuilder buffer;
 
+    /**
+     * Execute pipe of small commands as a big command.
+     *
+     * @param inStmts List of small commands
+     * @return {@code ResultCode} of the programm
+     */
     public ResultCode execute(List<Executable> inStmts) {
         buffer = new StringBuilder();
         if (inStmts == null || inStmts.size() == 0) {
@@ -27,6 +36,11 @@ public class Executor {
         return resultCode;
     }
 
+    /**
+     * Get command's buffer
+     *
+     * @return Buffer
+     */
     public String getBuffer() {
         return buffer.toString();
     }

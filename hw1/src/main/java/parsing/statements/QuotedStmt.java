@@ -16,6 +16,7 @@ public class QuotedStmt {
 
     /**
      * Initialise data
+     *
      * @param parts arguments of CLI command
      */
     public QuotedStmt(List<QuoteProcessedString> parts) {
@@ -25,6 +26,7 @@ public class QuotedStmt {
     /**
      * Returns true if the next token matches the pattern constructed from the
      * specified string.
+     *
      * @return true if and only if this class has another token matching
      * the specified pattern
      */
@@ -35,6 +37,7 @@ public class QuotedStmt {
     /**
      * Returns the next token if it matches the pattern constructed from the specified string.
      * If the match is successful, the class advances past the input that matched the pattern.
+     *
      * @return the next token
      */
     public QuoteProcessedString next() {

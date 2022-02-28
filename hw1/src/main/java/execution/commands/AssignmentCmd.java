@@ -3,15 +3,29 @@ package execution.commands;
 import environment.Environment;
 import execution.ResultCode;
 
+/**
+ * Class for '=' operator
+ */
 public class AssignmentCmd implements Binary {
     private final String variableName;
     private final Environment environment; //TODO: fabric?
 
+    /**
+     * Constructor of {@code AssignmentCmd} class
+     *
+     * @param variableName Environment variable name
+     * @param environment  Environment of the REPL
+     */
     public AssignmentCmd(String variableName, Environment environment) {
         this.variableName = variableName;
         this.environment = environment;
     }
 
+    /**
+     * Get variable name
+     *
+     * @return Variable name
+     */
     public String getVariableName() {
         return variableName;
     }

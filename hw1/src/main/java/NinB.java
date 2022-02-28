@@ -24,6 +24,7 @@ public class NinB {
     /**
      * Evaluate the input String, including definition and/or execution, if applicable. The input is checked for errors, unless the errors can be deferred , errors will not abort evaluation.
      * The input should be exactly one command. To break arbitrary input into individual complete snippets, use "quit".
+     *
      * @param args required by java
      */
     public static void main(String[] args) {
@@ -43,7 +44,7 @@ public class NinB {
             List<Executable> executables = commandParser.parse(parsedCommands);
             ResultCode resultCode = executor.execute(executables);
             if (resultCode.getReturnCode() == 0) {
-                System.out.println(resultCode.getReturnCode());;
+                System.out.println(resultCode.getReturnCode());
             } else {
                 System.err.println(resultCode.getReturnCode());
             }
