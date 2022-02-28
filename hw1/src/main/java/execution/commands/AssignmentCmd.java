@@ -18,10 +18,10 @@ public class AssignmentCmd implements Binary {
 
     @Override
     public ResultCode execute(String[] args, StringBuilder buffer) {
-        String variableValue = "";
-        if (args != null && args.length > 0) {
-            environment.setValue(variableName, variableValue);
-        }
+        String variableValue = args != null && args.length > 0
+                ? args[0]
+                : "";
+        environment.setValue(variableName, variableValue);
 
         return ResultCode.okCode();
     }

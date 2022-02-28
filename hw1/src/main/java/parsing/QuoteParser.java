@@ -9,26 +9,43 @@ import parsing.statements.parsed.WeakQuotedString;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class QuoteParser {
     public QuotedStmt parse(RawStmt rawStmt) {
-        Scanner sc = new Scanner(rawStmt.getString());
-        List<QuoteProcessedString> parts = new ArrayList<>();
-        while (sc.hasNext()) {
-            String tmp = sc.next();
-            if (tmp.isEmpty()) {
-                continue;
-            }
-            if (tmp.charAt(0) == '\'' && tmp.charAt(tmp.length() - 1) == '\'') {
-                parts.add(new FullQuotedString(tmp.substring(1, tmp.length() - 1)));
-            } else if (tmp.charAt(0) == '\"' && tmp.charAt(tmp.length() - 1) == '\"') {
-                parts.add(new WeakQuotedString(tmp.substring(1, tmp.length() - 1)));
+        List<QuoteProcessedString> command = new ArrayList<>();
+
+        StringBuilder currentString = new StringBuilder();
+
+        boolean isWeakQuoted = false;
+        boolean isFullQuoted = false;
+        for (char ch : rawStmt.getString().toCharArray()) {
+            if (ch == '\'' && !isWeakQuoted) {
+                if (isFullQuoted) {
+                    command.add(new FullQuotedString(currentString.toString()));
+                    currentString.setLength(0);
+                    isFullQuoted = false;
+                } else {
+                    command.add(new RawString(currentString.toString()));
+                    currentString.setLength(0);
+                    isFullQuoted = true;
+                }
+            } else if (ch == '\"' && !isFullQuoted) {
+                if (isWeakQuoted) {
+                    command.add(new WeakQuotedString(currentString.toString()));
+                    currentString.setLength(0);
+                    isWeakQuoted = false;
+                } else {
+                    command.add(new RawString(currentString.toString()));
+                    currentString.setLength(0);
+                    isWeakQuoted = true;
+                }
             } else {
-                parts.add(new RawString(tmp));
+                currentString.append(ch);
             }
         }
-        return new QuotedStmt(parts);
-    }
+        // TODO: process unclosed quoting, e.g. rawStmt: echo 'ffff
+        command.add(new RawString(currentString.toString()));
 
+        return new QuotedStmt(command);
+    }
 }
