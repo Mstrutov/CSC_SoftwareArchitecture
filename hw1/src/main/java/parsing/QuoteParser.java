@@ -29,31 +29,39 @@ public class QuoteParser {
         for (char ch : rawStmt.getString().toCharArray()) {
             if (ch == '\'' && !isWeakQuoted) {
                 if (isFullQuoted) {
-                    command.add(new FullQuotedString(currentString.toString()));
-                    currentString.setLength(0);
+                    if (!currentString.isEmpty()) {
+                        command.add(new FullQuotedString(currentString.toString()));
+                        currentString.setLength(0);
+                    }
                     isFullQuoted = false;
                 } else {
-                    command.add(new RawString(currentString.toString()));
-                    currentString.setLength(0);
+                    if (!currentString.isEmpty()) {
+                        command.add(new RawString(currentString.toString()));
+                        currentString.setLength(0);
+                    }
                     isFullQuoted = true;
                 }
             } else if (ch == '\"' && !isFullQuoted) {
                 if (isWeakQuoted) {
-                    command.add(new WeakQuotedString(currentString.toString()));
-                    currentString.setLength(0);
+                    if (!currentString.isEmpty()) {
+                        command.add(new WeakQuotedString(currentString.toString()));
+                        currentString.setLength(0);
+                    }
                     isWeakQuoted = false;
                 } else {
-                    command.add(new RawString(currentString.toString()));
-                    currentString.setLength(0);
+                    if (!currentString.isEmpty()) {
+                        command.add(new RawString(currentString.toString()));
+                        currentString.setLength(0);
+                    }
                     isWeakQuoted = true;
                 }
             } else {
                 currentString.append(ch);
             }
         }
-        // TODO: process unclosed quoting, e.g. rawStmt: echo 'ffff
-        command.add(new RawString(currentString.toString()));
-
+        if (!currentString.isEmpty() || isWeakQuoted || isFullQuoted) {
+            command.add(new RawString((isWeakQuoted ? "\"" : "") + (isFullQuoted ? '\'' : "") + currentString));
+        }
         return new QuotedStmt(command);
     }
 }

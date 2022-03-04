@@ -31,6 +31,7 @@ public class ControlParser {
 
             // TODO: phase 2 -- parse $ in WQS
             if (parsedString instanceof EscapedString) {
+                // TODO: nothing flushes currently
                 command.add(parsedString);
             } else {
                 String rawString = parsedString.getString();
