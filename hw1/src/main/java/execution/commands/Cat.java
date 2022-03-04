@@ -12,11 +12,12 @@ import java.io.IOException;
 public class Cat implements BuiltInCmd {
     @Override
     public ResultCode execute(String[] args, StringBuilder buffer) {
-        if (args.length == 0) {
-            System.err.println("Required at least 1 argument");
+        String fileName = CommandUtils.getArgumentFromBuffer(buffer, args);
+        if (fileName == null) {
             return new ResultCode(1, false);
         }
-        try (BufferedReader br = new BufferedReader(new FileReader(args[0]))) {
+        buffer.setLength(0);
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = br.readLine()) != null) {
                 buffer.append(line);

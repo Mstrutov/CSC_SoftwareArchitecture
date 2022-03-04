@@ -23,6 +23,7 @@ public class ControlParser {
      */
     public List<LambdaStmt> parse(QuotedStmt quotedStmt) {
         List<ParsedString> command = new ArrayList<>();
+        List<LambdaStmt> lambdaStmts = new ArrayList<>();
 
         StringBuilder currentString = new StringBuilder();
         while (quotedStmt.hasNext()) {
@@ -38,14 +39,21 @@ public class ControlParser {
                     if (isAssignmentSymbol(ch)) {
                         flushRawString(currentString, command);
                         command.add(AssignmentOperator.get());
+                    } else if (isPipeSymbol(ch)) {
+                        flushRawString(currentString, command);
+                        lambdaStmts.add(new LambdaStmt(command));
+                        command = new ArrayList<>();
                     } else {
                         currentString.append(ch);
                     }
                 }
                 flushRawString(currentString, command);
+                if (!command.isEmpty()) {
+                    lambdaStmts.add(new LambdaStmt(command));
+                }
             }
         }
-        return Collections.singletonList(new LambdaStmt(command));
+        return lambdaStmts;
     }
 
     private void flushRawString(StringBuilder currentString, List<ParsedString> command) {
@@ -55,5 +63,9 @@ public class ControlParser {
 
     static private boolean isAssignmentSymbol(char ch) {
         return ch == '=';
+    }
+
+    static private boolean isPipeSymbol(char ch) {
+        return ch == '|';
     }
 }

@@ -12,7 +12,7 @@ public class Executor {
      * Execute pipe of small commands as a big command.
      *
      * @param inStmts List of small commands
-     * @return {@code ResultCode} of the programm
+     * @return {@code ResultCode} of the program
      */
     public ResultCode execute(List<Executable> inStmts) {
         buffer = new StringBuilder();
@@ -20,15 +20,19 @@ public class Executor {
             return ResultCode.okCode();
         }
 
-        if (inStmts.size() > 1) {
-            throw new UnsupportedOperationException();
-        }
         ResultCode resultCode = null;
+        int commandNumber = 0;
         for (Executable inStmt : inStmts) {
             resultCode = inStmt.execute(buffer);
-            if (resultCode.getReturnCode() != 0) {
+            if (resultCode.isExitSignal()) {
+                System.out.println("Execution was abandoned due to exit command, passed # " + commandNumber);
                 return resultCode;
             }
+            if (resultCode.getReturnCode() != 0) {
+                System.out.println("Execution was abandoned due to non-zero return code in command # " + commandNumber);
+                return resultCode;
+            }
+            commandNumber++;
         }
 
         System.out.println(buffer);

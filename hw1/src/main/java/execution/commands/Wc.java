@@ -11,7 +11,11 @@ import java.io.IOException;
 public class Wc implements BuiltInCmd {
     @Override
     public ResultCode execute(String[] args, StringBuilder buffer) {
-        try (BufferedReader br = new BufferedReader(new FileReader(args[0]))) {
+        String fileName = CommandUtils.getArgumentFromBuffer(buffer, args);
+        if (fileName == null) {
+            return new ResultCode(1, false);
+        }
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             int lineCounter = 0;
             while (br.readLine() != null) {
                 lineCounter++;
