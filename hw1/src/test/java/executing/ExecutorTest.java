@@ -128,7 +128,7 @@ public class ExecutorTest {
         ResultCode resultCode = executor.execute(getExecutablesFromString("cat testfile1"));
         assertFalse(resultCode.isExitSignal());
         assertEquals(resultCode.getReturnCode(), 0);
-        assertEquals(outContent.toString(), "testfile1" + System.lineSeparator() + System.lineSeparator());
+        assertEquals(outContent.toString(), "testfile1" + System.lineSeparator());
         assertTrue(errContent.toString().isEmpty());
     }
 
