@@ -1,21 +1,22 @@
 package execution.commands;
 
 import execution.ResultCode;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+
+import java.io.*;
+
 /**
  * Wc linux command class.
  */
 public class Wc implements BuiltInCmd {
     @Override
     public ResultCode execute(String[] args, StringBuilder buffer) {
-        String fileName = CommandUtils.getArgumentFromBuffer(buffer, args);
-        if (fileName == null) {
-            return new ResultCode(1, false);
-        }
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+        try {
+            if (args.length == 0 && buffer.isEmpty()) {
+                System.err.println("Wc required at least 1 argument or non-empty buffer");
+                return new ResultCode(1, false);
+            }
+            BufferedReader br = new BufferedReader(buffer.isEmpty() ? new FileReader(args[0]) : new StringReader(buffer.toString()));
+            buffer.setLength(0);
             int lineCounter = 0;
             while (br.readLine() != null) {
                 lineCounter++;

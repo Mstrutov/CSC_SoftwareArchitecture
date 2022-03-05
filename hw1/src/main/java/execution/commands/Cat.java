@@ -1,10 +1,11 @@
 package execution.commands;
 
 import execution.ResultCode;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Cat linux command class.
@@ -12,17 +13,20 @@ import java.io.IOException;
 public class Cat implements BuiltInCmd {
     @Override
     public ResultCode execute(String[] args, StringBuilder buffer) {
-        String fileName = CommandUtils.getArgumentFromBuffer(buffer, args);
-        if (fileName == null) {
-            return new ResultCode(1, false);
-        }
-        buffer.setLength(0);
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                buffer.append(line);
-                buffer.append(System.getProperty("line.separator"));
+
+        try {
+            if (args.length == 0 && buffer.isEmpty()) {
+                System.err.println("Cat required at least 1 argument or non-empty buffer");
+                return new ResultCode(1, false);
             }
+            BufferedReader br = new BufferedReader(buffer.isEmpty() ? new FileReader(args[0]) : new StringReader(buffer.toString()));
+            buffer.setLength(0);
+            String line;
+            List<String> result = new ArrayList<>();
+            while ((line = br.readLine()) != null) {
+                result.add(line);
+            }
+            buffer.append(result.stream().collect(Collectors.joining(System.lineSeparator())));
         } catch (FileNotFoundException e) {
             System.err.println("File not found");
             return new ResultCode(1, false);

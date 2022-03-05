@@ -16,7 +16,7 @@ public class CommandUtils {
             return null;
         }
         String result = buffer.isEmpty() ? args[0] : buffer.toString();
-        buffer.setLength(0);
+
         return result;
     }
 }
