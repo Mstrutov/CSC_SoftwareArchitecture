@@ -12,6 +12,7 @@ import parsing.statements.QuotedStmt;
 import parsing.statements.RawStmt;
 import parsing.statements.Stmt;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,18 +35,22 @@ public class NinB {
         CommandParser commandParser = new CommandParser(new CommandRegistry(), new Environment());
         Executor executor = new Executor();
         while (true) {
-            RawStmt rawStmt = reader.read();
-            QuotedStmt quotedStmt = quoteParser.parse(rawStmt);
-            List<LambdaStmt> commands = controlParser.parse(quotedStmt);
-            // Substitutor?
-            List<Stmt> parsedCommands = commands.stream()
-                    .map(item -> new Stmt(item.getParts()))
-                    .collect(Collectors.toList());
-            List<Executable> executables = commandParser.parse(parsedCommands);
-            ResultCode resultCode = executor.execute(executables);
-            System.out.println("Command finished with result code " + resultCode.getReturnCode());
-            if (resultCode.isExitSignal()) {
-                break;
+            try {
+                RawStmt rawStmt = reader.read();
+                QuotedStmt quotedStmt = quoteParser.parse(rawStmt);
+                List<LambdaStmt> commands = controlParser.parse(quotedStmt);
+                // Substitutor?
+                List<Stmt> parsedCommands = commands.stream()
+                        .map(item -> new Stmt(item.getParts()))
+                        .collect(Collectors.toList());
+                List<Executable> executables = commandParser.parse(parsedCommands);
+                ResultCode resultCode = executor.execute(executables);
+                System.out.println("Command finished with result code " + resultCode.getReturnCode());
+                if (resultCode.isExitSignal()) {
+                    break;
+                }
+            } catch (Exception e) {
+                System.out.println("Unknown exception: " + Arrays.toString(e.getStackTrace()));
             }
         }
     }

@@ -21,46 +21,31 @@ public class QuoteParser {
      */
     public QuotedStmt parse(RawStmt rawStmt) {
         List<QuoteProcessedString> command = new ArrayList<>();
+        int boundIndex = 0;
+        String dataString = rawStmt.getString();
 
-        StringBuilder currentString = new StringBuilder();
-
-        boolean isWeakQuoted = false;
-        boolean isFullQuoted = false;
-        for (char ch : rawStmt.getString().toCharArray()) {
-            if (ch == '\'' && !isWeakQuoted) {
-                if (isFullQuoted) {
-                    if (!currentString.isEmpty()) {
-                        command.add(new FullQuotedString(currentString.toString()));
-                        currentString.setLength(0);
-                    }
-                    isFullQuoted = false;
-                } else {
-                    if (!currentString.isEmpty()) {
-                        command.add(new RawString(currentString.toString()));
-                        currentString.setLength(0);
-                    }
-                    isFullQuoted = true;
+        for (int i = 0; i < dataString.length(); i++) {
+            char ch = dataString.charAt(i);
+            int nextFullIndex = dataString.indexOf('\'', i + 1);
+            int nextWeakIndex = dataString.indexOf('\"', i + 1);
+            if (ch == '\'' && nextFullIndex != -1) {
+                if (boundIndex != i) {
+                    command.add(new RawString(dataString.substring(boundIndex, i)));
                 }
-            } else if (ch == '\"' && !isFullQuoted) {
-                if (isWeakQuoted) {
-                    if (!currentString.isEmpty()) {
-                        command.add(new WeakQuotedString(currentString.toString()));
-                        currentString.setLength(0);
-                    }
-                    isWeakQuoted = false;
-                } else {
-                    if (!currentString.isEmpty()) {
-                        command.add(new RawString(currentString.toString()));
-                        currentString.setLength(0);
-                    }
-                    isWeakQuoted = true;
+                command.add(new FullQuotedString(dataString.substring(i + 1, nextFullIndex)));
+                boundIndex = nextFullIndex + 1;
+                i = nextFullIndex + 1;
+            } else if (ch == '\"' && nextFullIndex != -1) {
+                if (boundIndex != i) {
+                    command.add(new RawString(dataString.substring(boundIndex, i)));
                 }
-            } else {
-                currentString.append(ch);
+                command.add(new WeakQuotedString(dataString.substring(i + 1, nextWeakIndex)));
+                boundIndex = nextWeakIndex + 1;
+                i = nextWeakIndex + 1;
             }
         }
-        if (!currentString.isEmpty() || isWeakQuoted || isFullQuoted) {
-            command.add(new RawString((isWeakQuoted ? "\"" : "") + (isFullQuoted ? '\'' : "") + currentString));
+        if (boundIndex != dataString.length()) {
+            command.add(new RawString(dataString.substring(boundIndex)));
         }
         return new QuotedStmt(command);
     }
