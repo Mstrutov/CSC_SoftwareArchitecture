@@ -18,20 +18,29 @@ public class QuoteParserTest {
     private static final QuoteParser quoteParser = new QuoteParser();
 
     @Test
-    public void test() {
-        testString("abc'de", List.of(new RawString("abc'de")));
-        testString("\"abc'de\"", List.of(new WeakQuotedString("abc'de")));
-        testString("'abc'de'", List.of(new FullQuotedString("abc"), new RawString("de'")));
-        testString("abc''de", List.of(new RawString("abc"), new FullQuotedString(""), new RawString("de")));
-        testString("echo \"abc\" 'def' ghi \"jkl\" 'mno'",
+    public void basicQuoteTest() {
+        testResultIsCorrect("abc'de", List.of(new RawString("abc'de")));
+        testResultIsCorrect("\"abc'de\"", List.of(new WeakQuotedString("abc'de")));
+        testResultIsCorrect("'abc'de'", List.of(new FullQuotedString("abc"), new RawString("de'")));
+    }
+
+    @Test
+    public void bigMixedQuoteTest() {
+        testResultIsCorrect("echo \"abc\" 'def' ghi \"jkl\" 'mno'",
                 List.of(new RawString("echo "), new WeakQuotedString("abc"),
                         new RawString(" "), new FullQuotedString("def"),
                         new RawString(" ghi "), new WeakQuotedString("jkl"),
                         new RawString(" "), new FullQuotedString("mno")));
-        testString("", Collections.emptyList());
     }
 
-    public void testString(String str, List<QuoteProcessedString> actualList) {
+    @Test
+    public void emptyStringClassTest() {
+        testResultIsCorrect("", Collections.emptyList());
+        testResultIsCorrect("abc''de", List.of(new RawString("abc"), new FullQuotedString(""), new RawString("de")));
+        testResultIsCorrect("abc\"\"de", List.of(new RawString("abc"), new WeakQuotedString(""), new RawString("de")));
+    }
+
+    public void testResultIsCorrect(String str, List<QuoteProcessedString> actualList) {
         QuotedStmt stmt = quoteParser.parse(new RawStmt(str));
         Iterator<QuoteProcessedString> actualIterator = actualList.iterator();
         while (actualIterator.hasNext() && stmt.hasNext()) {

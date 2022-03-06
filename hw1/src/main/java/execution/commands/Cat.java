@@ -17,7 +17,8 @@ public class Cat implements BuiltInCmd {
             System.err.println("Cat required at least 1 argument or non-empty buffer");
             return new ResultCode(1, false);
         }
-        try (BufferedReader br = new BufferedReader(buffer.isEmpty() ? new FileReader(args[0]) : new StringReader(buffer.toString()));) {
+        try (BufferedReader br =
+                     new BufferedReader(buffer.isEmpty() ? new FileReader(args[0]) : new StringReader(buffer.toString()))) {
             buffer.setLength(0);
             String line;
             List<String> result = new ArrayList<>();
@@ -32,8 +33,6 @@ public class Cat implements BuiltInCmd {
             System.err.println("IOException");
             e.printStackTrace();
             return new ResultCode(1, false);
-        } finally {
-
         }
         return new ResultCode(0, false);
     }

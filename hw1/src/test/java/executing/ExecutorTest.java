@@ -38,6 +38,7 @@ public class ExecutorTest {
     private static final PrintStream originalOut = System.out;
     private static final PrintStream originalErr = System.err;
 
+
     @BeforeAll
     static void init() {
         System.setOut(new PrintStream(outContent));

@@ -2,6 +2,7 @@ package parsing;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import parsing.statements.QuotedStmt;
 import parsing.statements.RawStmt;
 import parsing.statements.parsed.FullQuotedString;
@@ -21,31 +22,37 @@ public class QuoteParser {
      */
     public QuotedStmt parse(RawStmt rawStmt) {
         List<QuoteProcessedString> command = new ArrayList<>();
-        int boundIndex = 0;
+        int unparsedStartIndex = 0;
         String dataString = rawStmt.getString();
 
         for (int i = 0; i < dataString.length(); i++) {
             char ch = dataString.charAt(i);
-            int nextFullIndex = dataString.indexOf('\'', i + 1);
-            int nextWeakIndex = dataString.indexOf('\"', i + 1);
-            if (ch == '\'' && nextFullIndex != -1) {
-                if (boundIndex != i) {
-                    command.add(new RawString(dataString.substring(boundIndex, i)));
+            if (ch == '\'') {
+                int nextFullIndex = dataString.indexOf('\'', i + 1);
+                if (nextFullIndex == -1) {
+                    continue;
+                }
+                if (unparsedStartIndex != i) {
+                    command.add(new RawString(dataString.substring(unparsedStartIndex, i)));
                 }
                 command.add(new FullQuotedString(dataString.substring(i + 1, nextFullIndex)));
-                boundIndex = nextFullIndex + 1;
+                unparsedStartIndex = nextFullIndex + 1;
                 i = nextFullIndex + 1;
-            } else if (ch == '\"' && nextFullIndex != -1) {
-                if (boundIndex != i) {
-                    command.add(new RawString(dataString.substring(boundIndex, i)));
+            } else if (ch == '\"') {
+                int nextWeakIndex = dataString.indexOf('\"', i + 1);
+                if (nextWeakIndex == -1) {
+                    continue;
+                }
+                if (unparsedStartIndex != i) {
+                    command.add(new RawString(dataString.substring(unparsedStartIndex, i)));
                 }
                 command.add(new WeakQuotedString(dataString.substring(i + 1, nextWeakIndex)));
-                boundIndex = nextWeakIndex + 1;
+                unparsedStartIndex = nextWeakIndex + 1;
                 i = nextWeakIndex + 1;
             }
         }
-        if (boundIndex != dataString.length()) {
-            command.add(new RawString(dataString.substring(boundIndex)));
+        if (unparsedStartIndex != dataString.length()) {
+            command.add(new RawString(dataString.substring(unparsedStartIndex)));
         }
         return new QuotedStmt(command);
     }
