@@ -13,10 +13,10 @@ public class Environment {
      * Get the value of an environment variable
      *
      * @param variableName Environment variable name
-     * @return Value of environment variable
+     * @return Value of environment variable, if it is set, otherwise empty string.
      */
     public String getValue(String variableName) {
-        return variables.get(variableName);
+        return variables.getOrDefault(variableName, "");
     }
 
     /**

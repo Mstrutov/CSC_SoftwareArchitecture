@@ -7,6 +7,7 @@ import parsing.CommandParser;
 import parsing.ControlParser;
 import parsing.QuoteParser;
 import parsing.Reader;
+import parsing.Substitutor;
 import parsing.statements.LambdaStmt;
 import parsing.statements.QuotedStmt;
 import parsing.statements.RawStmt;
@@ -14,7 +15,6 @@ import parsing.statements.Stmt;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * The NinB evaluation state engine.  This is the central class in the NinB
@@ -29,21 +29,21 @@ public class NinB {
      * @param args required by java
      */
     public static void main(String[] args) {
+        Environment environment = new Environment();
+
         Reader reader = new Reader(System.in);
         QuoteParser quoteParser = new QuoteParser();
         ControlParser controlParser = new ControlParser();
-        CommandParser commandParser = new CommandParser(new CommandRegistry(), new Environment());
+        Substitutor substitutor = new Substitutor(environment);
+        CommandParser commandParser = new CommandParser(new CommandRegistry(), environment);
         Executor executor = new Executor();
         while (true) {
             try {
                 RawStmt rawStmt = reader.read();
                 QuotedStmt quotedStmt = quoteParser.parse(rawStmt);
                 List<LambdaStmt> commands = controlParser.parse(quotedStmt);
-                // Substitutor?
-                List<Stmt> parsedCommands = commands.stream()
-                        .map(item -> new Stmt(item.getParts()))
-                        .collect(Collectors.toList());
-                List<Executable> executables = commandParser.parse(parsedCommands);
+                List<Stmt> substitutedCommands = substitutor.substitute(commands);
+                List<Executable> executables = commandParser.parse(substitutedCommands);
                 ResultCode resultCode = executor.execute(executables);
                 System.out.println("Command finished with result code " + resultCode.getReturnCode());
                 if (resultCode.isExitSignal()) {
