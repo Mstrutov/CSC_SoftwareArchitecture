@@ -10,13 +10,29 @@ import parsing.statements.parsed.Variable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The component responsible for substitution of environment variables into the pre-parsed statement.
+ */
 public class Substitutor {
-    private Environment environment;
+    private final Environment environment;
 
+    /**
+     * {@code Substitutor} constructor
+     *
+     * @param environment - an environment with variables to substitute
+     */
     public Substitutor(Environment environment) {
         this.environment = environment;
     }
 
+    /**
+     * Uses the environment passed to the constructor to replace variables in the pre-parsed statements with
+     * their values. Takes every Variable x in {@code inStmts} and replaces it with RawString containing
+     * the Variable value.
+     *
+     * @param inStmts - list of statements to substitute into
+     * @return list of statements with substituted variable values
+     * */
     public List<Stmt> substitute(List<LambdaStmt> inStmts) {
         List<Stmt> outStmts = new ArrayList<>();
         for (LambdaStmt inStmt : inStmts) {
