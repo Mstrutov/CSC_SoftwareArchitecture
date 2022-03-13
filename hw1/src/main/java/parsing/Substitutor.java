@@ -34,6 +34,10 @@ public class Substitutor {
      * @return list of statements with substituted variable values
      * */
     public List<Stmt> substitute(List<LambdaStmt> inStmts) {
+        if (inStmts == null) {
+            return null;
+        }
+
         List<Stmt> outStmts = new ArrayList<>();
         for (LambdaStmt inStmt : inStmts) {
             List<ParsedString> substitutedStrings = new ArrayList<>();
