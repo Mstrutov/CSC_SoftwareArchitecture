@@ -71,7 +71,7 @@ https://online.visual-paradigm.com/share.jsp?id=313933363938382d31
 
 ### Композиция
 
-https://drive.google.com/file/d/1eHotG0VuHOHjGpFC3abiIB1K4Nid8P20/view?usp=sharing
+https://online.visual-paradigm.com/share.jsp?id=313933383930372d31
 
 ### Логическая структура
 https://online.visual-paradigm.com/share.jsp?id=313933363938382d33
