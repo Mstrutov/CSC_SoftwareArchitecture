@@ -17,6 +17,6 @@ public class FrameCalculator {
     }
 
     public Frame nextFrame() {
-
+        throw new UnsupportedOperationException();
     }
 }
