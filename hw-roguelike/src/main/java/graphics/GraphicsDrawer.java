@@ -57,8 +57,8 @@ public class GraphicsDrawer {
         clearScreen(screen);
 
         for (Obstacle obstacle : frame.getObstacles()) {
-            for (int column = obstacle.getLeftBorder(); column < obstacle.getRightBorder(); column++) {
-                for (int row = obstacle.getBottomBorder(); row < obstacle.getTopBorder(); row++) {
+            for (int column = obstacle.getLeftBorder(); column <= obstacle.getRightBorder(); column++) {
+                for (int row = obstacle.getBottomBorder(); row <= obstacle.getTopBorder(); row++) {
                     screen.setCharacter(column, row, TextCharacter.fromCharacter(
                             CHAR_OF.OBSTACLE.get(),
                             TextColor.ANSI.DEFAULT,
