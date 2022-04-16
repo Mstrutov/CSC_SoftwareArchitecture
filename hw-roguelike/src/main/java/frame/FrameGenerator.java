@@ -14,8 +14,9 @@ public class FrameGenerator {
     public static final int MOB_RANDOM_MAX_SIZE = 3;
     public static final int MOB_RANDOM_MAX_POWER = 5;
 
-    public static final int PLAYGROUND_WIDTH = 100;
-    public static final int PLAYGROUND_HEIGHT = 100;
+    // TODO: figure out the dependency: terminal size <-> playground size
+    public static final int PLAYGROUND_WIDTH = 80;
+    public static final int PLAYGROUND_HEIGHT = 24;
 
 
     private final Random random = new Random(0);
@@ -28,7 +29,7 @@ public class FrameGenerator {
                 int leftBorder = random.nextInt(PLAYGROUND_WIDTH);
                 int bottomBorder = random.nextInt(PLAYGROUND_HEIGHT);
                 int size = random.nextInt(OBSTACLES_RANDOM_MAX_SIZE);
-                if (bottomBorder + size >= 100 || leftBorder + size >= 100) {
+                if (bottomBorder + size >= PLAYGROUND_HEIGHT || leftBorder + size >= PLAYGROUND_WIDTH) {
                     continue;
                 }
                 Obstacle obstacle = new Obstacle(leftBorder, bottomBorder, leftBorder + size, bottomBorder + size);
