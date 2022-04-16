@@ -1,6 +1,10 @@
 package frame;
 
 import entities.Player;
+import input.InputScanner;
+
+import java.util.List;
+import java.util.function.Predicate;
 
 public class FrameCalculator {
     Frame currentFrame;
@@ -14,9 +18,31 @@ public class FrameCalculator {
 
     public FrameCalculator() {
         currentFrame = frameGenerator.getNextFrame();
+        currentFrame.addPlayer(player);
     }
 
-    public Frame nextFrame() {
-        throw new UnsupportedOperationException();
+    public Frame nextFrame(List<InputScanner.COMMAND> commands) {
+        player.moveCharacter(processDeltaX(commands), processDeltaY(commands));
+        return currentFrame;
+    }
+
+    private int processDeltaX(List<InputScanner.COMMAND> commands) {
+        return (int) (
+                commands.stream()
+                        .filter(Predicate.isEqual(InputScanner.COMMAND.MOVE_RIGHT))
+                        .count() -
+                        commands.stream()
+                                .filter(Predicate.isEqual(InputScanner.COMMAND.MOVE_LEFT))
+                                .count());
+
+    }
+    private int processDeltaY(List<InputScanner.COMMAND> commands) {
+        return (int) (
+                commands.stream()
+                        .filter(Predicate.isEqual(InputScanner.COMMAND.MOVE_DOWN))
+                        .count() -
+                        commands.stream()
+                                .filter(Predicate.isEqual(InputScanner.COMMAND.MOVE_UP))
+                                .count());
     }
 }
