@@ -11,7 +11,7 @@ import frame.FrameGenerator;
 import java.io.IOException;
 
 public class GraphicsDrawer {
-    private enum CHAR_OF {
+    public enum CHAR_OF {
         BLANK(' '),
         OBSTACLE('#'),
         MOB('%'),
@@ -28,7 +28,7 @@ public class GraphicsDrawer {
         }
     }
 
-    private Screen screen = null;
+    private final Screen screen;
 
     private static void clearScreen(Screen screen) {
         // initialize window, it could be useful to draw here some lines, HUD block edges or smth
