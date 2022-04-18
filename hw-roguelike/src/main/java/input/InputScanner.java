@@ -11,36 +11,28 @@ import java.util.Map;
 public class InputScanner {
     Screen screen;
 
-    private final Map<Character, COMMAND> charToCommand;
-
-    // TODO: classes with polymorphism instead?
-    public enum COMMAND {
-        MOVE_UP,
-        MOVE_DOWN,
-        MOVE_LEFT,
-        MOVE_RIGHT,
-        QUIT
-    }
+    private final Map<Character, Command> charToCommand;
 
     public InputScanner(Screen screen) {
         this.screen = screen;
 
         this.charToCommand = new HashMap<>();
-        charToCommand.put('w', COMMAND.MOVE_UP);
-        charToCommand.put('s', COMMAND.MOVE_DOWN);
-        charToCommand.put('a', COMMAND.MOVE_LEFT);
-        charToCommand.put('d', COMMAND.MOVE_RIGHT);
+        charToCommand.put('e', Command.ATTACK);
+        charToCommand.put('w', Command.MOVE_UP);
+        charToCommand.put('s', Command.MOVE_DOWN);
+        charToCommand.put('a', Command.MOVE_LEFT);
+        charToCommand.put('d', Command.MOVE_RIGHT);
     }
 
-    public List<COMMAND> getCommands() {
-        List<COMMAND> commands = new ArrayList<>();
+    public List<Command> getCommands() {
+        List<Command> commands = new ArrayList<>();
 
         try{
             var input = screen.pollInput();
             while (input != null) {
                 switch (input.getKeyType()) {
                     case Character -> addIfMatchesAny(commands, input.getCharacter());
-                    case Escape -> commands.add(COMMAND.QUIT);
+                    case Escape -> commands.add(Command.QUIT);
                 }
                 input = screen.pollInput();
             }
@@ -51,7 +43,7 @@ public class InputScanner {
         return commands;
     }
 
-    private void addIfMatchesAny(List<COMMAND> commands, char key) {
+    private void addIfMatchesAny(List<Command> commands, char key) {
         if (charToCommand.containsKey(key)) {
             commands.add(charToCommand.get(key));
         }

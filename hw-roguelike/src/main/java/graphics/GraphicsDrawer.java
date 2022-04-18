@@ -1,19 +1,14 @@
 package graphics;
 
-import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.screen.Screen;
-import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import entities.Mob;
 import entities.Obstacle;
 import frame.Frame;
 import frame.FrameGenerator;
 
-import javax.xml.stream.events.Characters;
 import java.io.IOException;
-import java.util.List;
-import java.util.Random;
 
 public class GraphicsDrawer {
     private enum CHAR_OF {
@@ -69,7 +64,7 @@ public class GraphicsDrawer {
         for (Mob mob : frame.getMobs()) {
             screen.setCharacter(mob.getCoordX(), mob.getCoordY(), TextCharacter.fromCharacter(
                     CHAR_OF.MOB.get(),
-                    TextColor.ANSI.DEFAULT,
+                    mob.isDead() ? TextColor.ANSI.RED : TextColor.ANSI.DEFAULT,
                     TextColor.ANSI.DEFAULT)[0]);
         }
         if (frame.getPlayer() != null) {
