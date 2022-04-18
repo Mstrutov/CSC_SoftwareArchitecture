@@ -27,7 +27,7 @@ public class InputScanner {
     public List<Command> getCommands() {
         List<Command> commands = new ArrayList<>();
 
-        try{
+        try {
             var input = screen.pollInput();
             while (input != null) {
                 switch (input.getKeyType()) {
