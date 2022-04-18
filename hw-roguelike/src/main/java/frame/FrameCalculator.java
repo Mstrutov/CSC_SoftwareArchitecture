@@ -56,7 +56,7 @@ public class FrameCalculator {
     }
 
     private boolean outOfRoomBounds(int x, int y) {
-        return x < 0 || x > FrameGenerator.PLAYGROUND_WIDTH || y < 0 || y > FrameGenerator.PLAYGROUND_HEIGHT;
+        return x < 0 || x >= FrameGenerator.PLAYGROUND_WIDTH || y < 0 || y >= FrameGenerator.PLAYGROUND_HEIGHT;
     }
 
     private static class MeleeAttack {
@@ -126,13 +126,13 @@ public class FrameCalculator {
         if (player.getCoordX() < 0) {
             coordX -= 1;
             player.moveCharacter(FrameGenerator.PLAYGROUND_WIDTH, 0);
-        } else if (player.getCoordX() > FrameGenerator.PLAYGROUND_WIDTH) {
+        } else if (player.getCoordX() >= FrameGenerator.PLAYGROUND_WIDTH) {
             coordX += 1;
             player.moveCharacter(-FrameGenerator.PLAYGROUND_WIDTH, 0);
         } else if (player.getCoordY() < 0) {
             coordY -= 1;
             player.moveCharacter(0, FrameGenerator.PLAYGROUND_HEIGHT);
-        } else if (player.getCoordY() > FrameGenerator.PLAYGROUND_HEIGHT) {
+        } else if (player.getCoordY() >= FrameGenerator.PLAYGROUND_HEIGHT) {
             coordY += 1;
             player.moveCharacter(0, -FrameGenerator.PLAYGROUND_HEIGHT);
         }
