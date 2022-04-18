@@ -7,11 +7,14 @@ public class Mob {
     private int coordX;
     private int coordY;
 
+    private boolean isDead;
+
     public Mob(int coordX, int coordY, int power) {
         this.power = power;
         this.coordX = coordX;
         this.coordY = coordY;
         healthPoints = 100;
+        isDead = false;
     }
 
     public int getHealthPoints() {
@@ -20,6 +23,7 @@ public class Mob {
 
     public void setHealthPoints(int healthPoints) {
         this.healthPoints = healthPoints;
+        isDead = (this.healthPoints <= 0);
     }
 
     public int getPower() {
@@ -44,5 +48,13 @@ public class Mob {
 
     public void setCoordY(int coordY) {
         this.coordY = coordY;
+    }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public boolean occupiesCell(int coordX, int coordY) {
+        return getCoordX() == coordX && getCoordY() == coordY;
     }
 }

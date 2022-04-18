@@ -6,11 +6,13 @@ public class Player {
     private int coordX;
     private int coordY;
     private int healthPoints;
+    private PlayerDirection playerDirection;
 
     public Player() {
         this.healthPoints = 100;
         coordX = FrameGenerator.PLAYGROUND_WIDTH / 2;
         coordY = FrameGenerator.PLAYGROUND_HEIGHT / 2;
+        playerDirection = PlayerDirection.RIGHT;
     }
 
     /**
@@ -29,6 +31,14 @@ public class Player {
 
     public int getCoordY() {
         return coordY;
+    }
+
+    public PlayerDirection getDirection() {
+        return playerDirection;
+    }
+
+    public void setDirection(PlayerDirection playerDirection) {
+        this.playerDirection = playerDirection;
     }
 
     public void moveCharacter(int deltaX, int deltaY) {

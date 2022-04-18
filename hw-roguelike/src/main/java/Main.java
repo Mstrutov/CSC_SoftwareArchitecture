@@ -1,18 +1,13 @@
-import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.TextCharacter;
-import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
-import com.googlecode.lanterna.terminal.Terminal;
 import frame.Frame;
 import frame.FrameCalculator;
-import frame.FrameGenerator;
 import graphics.GraphicsDrawer;
+import input.Command;
 import input.InputScanner;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Random;
 import java.util.function.Predicate;
 
 public class Main {
@@ -30,8 +25,8 @@ public class Main {
             InputScanner inputScanner = new InputScanner(screen);
 
             while (true) {
-                List<InputScanner.COMMAND> commands = inputScanner.getCommands();
-                if (commands.stream().anyMatch(Predicate.isEqual(InputScanner.COMMAND.QUIT))) {
+                List<Command> commands = inputScanner.getCommands();
+                if (commands.stream().anyMatch(Predicate.isEqual(Command.QUIT))) {
                     break;
                 }
                 Frame nextFrame = frameCalculator.nextFrame(commands);
