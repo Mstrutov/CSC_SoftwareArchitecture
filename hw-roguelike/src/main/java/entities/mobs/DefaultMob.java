@@ -1,6 +1,9 @@
-package entities;
+package entities.mobs;
 
-public class Mob {
+import entities.Player;
+import frame.Frame;
+
+public abstract class DefaultMob implements Mob{
     private int healthPoints;
     private int power;
 
@@ -8,13 +11,18 @@ public class Mob {
     private int coordY;
 
     private boolean isDead;
+    private boolean isHit;
+    private static final int RANGE = 1;
 
-    public Mob(int coordX, int coordY, int power) {
+    private int countdown = 50;
+
+    public DefaultMob(int coordX, int coordY, int power) {
         this.power = power;
         this.coordX = coordX;
         this.coordY = coordY;
         healthPoints = 100;
         isDead = false;
+        isHit = false;
     }
 
     public int getHealthPoints() {
@@ -24,6 +32,7 @@ public class Mob {
     public void setHealthPoints(int healthPoints) {
         this.healthPoints = healthPoints;
         isDead = (this.healthPoints <= 0);
+        isHit = true;
     }
 
     public int getPower() {
@@ -54,7 +63,30 @@ public class Mob {
         return isDead;
     }
 
+    public boolean isHit() {
+        return isHit;
+    }
+
+    public void recover() {
+        isHit = false;
+    }
+
     public boolean occupiesCell(int coordX, int coordY) {
         return getCoordX() == coordX && getCoordY() == coordY;
+    }
+
+    public boolean action(Player player, Frame frame) {
+        if (countdown > 0) {
+            countdown--;
+        } else if (Math.abs(player.getCoordX() - coordX) < 2 && Math.abs(player.getCoordY() - coordY) < 2) {
+            player.changeHP(-power);
+            countdown = 15;
+            return true;
+        }
+        return false;
+    }
+
+    public int getRange() {
+        return RANGE;
     }
 }

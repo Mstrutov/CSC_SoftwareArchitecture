@@ -12,7 +12,7 @@ import java.util.function.Predicate;
 
 public class Main {
     public static void main(String[] args) {
-        FrameCalculator frameCalculator = new FrameCalculator();
+
 
         DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
         Screen screen = null;
@@ -22,6 +22,7 @@ public class Main {
             screen.setCursorPosition(null);
 
             GraphicsDrawer graphicsDrawer = new GraphicsDrawer(screen);
+            FrameCalculator frameCalculator = new FrameCalculator(graphicsDrawer);
             InputScanner inputScanner = new InputScanner(screen);
 
             while (true) {

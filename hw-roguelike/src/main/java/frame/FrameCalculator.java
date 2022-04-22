@@ -1,14 +1,13 @@
 package frame;
 
-import entities.Mob;
+import entities.mobs.DefaultMob;
 import entities.Player;
 import entities.PlayerDirection;
+import entities.mobs.Mob;
+import graphics.GraphicsDrawer;
 import input.Command;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class FrameCalculator {
@@ -18,14 +17,17 @@ public class FrameCalculator {
     private Map<Integer, Map<Integer, Frame>> frames = new HashMap<>();
     private int coordX = 0;
     private int coordY = 0;
+    private final GraphicsDrawer graphicsDrawer;
 
 
-    public FrameCalculator(Frame startFrame) {
+    public FrameCalculator(GraphicsDrawer graphicsDrawer, Frame startFrame) {
+        this.graphicsDrawer = graphicsDrawer;
         currentFrame = startFrame;
         frames.put(0, new HashMap<>(Map.of(0, currentFrame)));
     }
 
-    public FrameCalculator() {
+    public FrameCalculator(GraphicsDrawer graphicsDrawer) {
+        this.graphicsDrawer = graphicsDrawer;
         currentFrame = frameGenerator.getNextFrame();
         currentFrame.addPlayer(player);
         frames.put(0, new HashMap<>(Map.of(0, currentFrame)));
@@ -34,7 +36,21 @@ public class FrameCalculator {
     public Frame nextFrame(List<Command> commands) {
         processPlayerMove(commands);
         processPlayerAttack(commands);
+        processMobsAction();
         return currentFrame;
+    }
+
+    private void processMobsAction() {
+        for (Mob mob : currentFrame.getMobs()) {
+            if (!mob.isDead()) {
+                if (mob.action(player, currentFrame)) {
+                    graphicsDrawer.drawMobAttack(mob);
+                }
+            }
+        }
+        if (player.isDead()) {
+            graphicsDrawer.endGame();
+        }
     }
 
     private void processPlayerMove(List<Command> commands) {
@@ -89,6 +105,10 @@ public class FrameCalculator {
                 .mapToInt(attack -> 50)
                 .reduce(0, Integer::sum);
 
+        if (totalDamage == 0) {
+            return;
+        }
+
         int damageDirectionX = switch (player.getDirection()) {
             case RIGHT -> 1;
             case LEFT -> -1;
@@ -107,8 +127,16 @@ public class FrameCalculator {
             return;
         }
 
-        MeleeAttack attack = new MeleeAttack(ontoX, ontoY, totalDamage);
-        assignDamageToMobs(attack);
+        List<Point> gunShots = new ArrayList<>();
+        MeleeAttack attackFirstCell = new MeleeAttack(ontoX, ontoY, totalDamage);
+        gunShots.add(new Point(ontoX, ontoY));
+        ontoY = ontoY + damageDirectionY;
+        ontoX = ontoX + damageDirectionX;
+        gunShots.add(new Point(ontoX, ontoY));
+        MeleeAttack attackSecondCell = new MeleeAttack(ontoX, ontoY, totalDamage);
+        graphicsDrawer.drawCells(gunShots);
+        assignDamageToMobs(attackFirstCell);
+        assignDamageToMobs(attackSecondCell);
     }
 
     private void assignDamageToMobs(MeleeAttack attack) {

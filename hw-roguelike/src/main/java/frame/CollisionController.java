@@ -1,7 +1,8 @@
 package frame;
 
-import entities.Mob;
+import entities.mobs.DefaultMob;
 import entities.Obstacle;
+import entities.mobs.Mob;
 
 public class CollisionController {
     public static boolean isObstacleCollidesWithObstacle(Obstacle a, Obstacle b) {
@@ -32,5 +33,13 @@ public class CollisionController {
             }
         }
         return true;
+
+    }
+
+    public static boolean isOkToMoveForMob(Frame frame, int coordX, int coordY) {
+        if (coordX >= 0 && coordX < FrameGenerator.PLAYGROUND_WIDTH && coordY >= 0 && coordY < FrameGenerator.PLAYGROUND_HEIGHT) {
+            return isOkToMove(frame, coordX, coordY);
+        }
+        return false;
     }
 }

@@ -7,6 +7,7 @@ public class Player {
     private int coordY;
     private int healthPoints;
     private PlayerDirection playerDirection;
+    private int countdown = 0;
 
     public Player() {
         this.healthPoints = 100;
@@ -20,8 +21,13 @@ public class Player {
      * @param delta of HP
      * @return true if character died
      */
-    public boolean changeHP(int delta) {
+    public void changeHP(int delta) {
+        System.out.println(healthPoints);
         healthPoints += delta;
+        countdown = 5;
+    }
+
+    public boolean isDead() {
         return healthPoints <= 0;
     }
 
@@ -44,5 +50,14 @@ public class Player {
     public void moveCharacter(int deltaX, int deltaY) {
         coordX += deltaX;
         coordY += deltaY;
+    }
+
+    public boolean isHit() {
+        if (countdown != 0) {
+            countdown--;
+            return true;
+        }
+
+        return false;
     }
 }

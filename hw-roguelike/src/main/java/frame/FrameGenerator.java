@@ -1,6 +1,6 @@
 package frame;
 
-import entities.Mob;
+import entities.mobs.*;
 import entities.Obstacle;
 
 import java.util.ArrayList;
@@ -12,12 +12,11 @@ public class FrameGenerator {
     public static final int OBSTACLES_RANDOM_MAX_SIZE = 10;
 
     public static final int MOB_RANDOM_MAX_SIZE = 3;
-    public static final int MOB_RANDOM_MAX_POWER = 5;
+    public static final int MOB_RANDOM_MAX_POWER = 10;
 
     // TODO: figure out the dependency: terminal size <-> playground size
     public static final int PLAYGROUND_WIDTH = 80;
     public static final int PLAYGROUND_HEIGHT = 24;
-
 
     private final Random random = new Random(0);
 
@@ -52,7 +51,16 @@ public class FrameGenerator {
         int numberOfMobs = random.nextInt(MOB_RANDOM_MAX_SIZE);
         for (int i = 0; i < numberOfMobs; i++) {
             while (true) {
-                Mob mob = new Mob(random.nextInt(PLAYGROUND_WIDTH), random.nextInt(PLAYGROUND_HEIGHT), random.nextInt(MOB_RANDOM_MAX_POWER));
+//                Mob mob = new PassiveMob(random.nextInt(PLAYGROUND_WIDTH), random.nextInt(PLAYGROUND_HEIGHT), random.nextInt(MOB_RANDOM_MAX_POWER));
+                int randomMobIndex = random.nextInt(3);
+                Mob mob;
+                if (randomMobIndex == 0) {
+                    mob = new CowardMob(random.nextInt(PLAYGROUND_WIDTH), random.nextInt(PLAYGROUND_HEIGHT), 5);
+                } else if (randomMobIndex == 1) {
+                    mob = new AgressiveMob(random.nextInt(PLAYGROUND_WIDTH), random.nextInt(PLAYGROUND_HEIGHT), 5);
+                } else {
+                    mob = new PassiveMob(random.nextInt(PLAYGROUND_WIDTH), random.nextInt(PLAYGROUND_HEIGHT), 5);
+                }
                 boolean badMob = false;
                 for (Obstacle obstacle : obstacleList) {
                     if (CollisionController.isObstacleCollidesWithMob(obstacle, mob)) {
