@@ -12,6 +12,10 @@ public interface Mob {
 
     int getCoordY();
 
+    void setCoordX(int coordX);
+
+    void setCoordY(int coordY);
+
     boolean isHit();
 
     boolean isDead();
@@ -29,4 +33,5 @@ public interface Mob {
 
     int getRange();
 
+    int getPower();
 }

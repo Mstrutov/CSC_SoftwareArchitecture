@@ -4,8 +4,8 @@ import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.screen.Screen;
 import entities.Obstacle;
+import entities.mobs.DefaultMob;
 import entities.mobs.Mob;
-import entities.mobs.PassiveMob;
 import frame.Frame;
 import frame.FrameGenerator;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,7 +55,7 @@ public class GraphicsDrawerTest {
     @Test
     void drawsAliveMobAndSingleObstacle() {
         Obstacle obstacle = new Obstacle(10, 10, 10, 10);
-        Mob mob = new PassiveMob(15, 15, 3);
+        Mob mob = new DefaultMob(15, 15, 3);
 
         Frame frame = new Frame(List.of(obstacle), List.of(mob));
         graphicsDrawer.draw(frame);

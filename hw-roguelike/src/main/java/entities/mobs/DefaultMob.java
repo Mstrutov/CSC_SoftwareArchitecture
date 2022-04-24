@@ -3,7 +3,7 @@ package entities.mobs;
 import entities.Player;
 import frame.Frame;
 
-public abstract class DefaultMob implements Mob{
+public class DefaultMob implements Mob{
     private int healthPoints;
     private int power;
 
@@ -14,15 +14,20 @@ public abstract class DefaultMob implements Mob{
     private boolean isHit;
     private static final int RANGE = 1;
 
-    private int countdown = 50;
+    private final BehaviourStrategy behaviourStrategy;
 
     public DefaultMob(int coordX, int coordY, int power) {
+        this(coordX, coordY, power, new PassiveBehaviourStrategy());
+    }
+
+    public DefaultMob(int coordX, int coordY, int power, BehaviourStrategy behaviourStrategy) {
         this.power = power;
         this.coordX = coordX;
         this.coordY = coordY;
         healthPoints = 100;
         isDead = false;
         isHit = false;
+        this.behaviourStrategy = behaviourStrategy;
     }
 
     public int getHealthPoints() {
@@ -76,14 +81,7 @@ public abstract class DefaultMob implements Mob{
     }
 
     public boolean action(Player player, Frame frame) {
-        if (countdown > 0) {
-            countdown--;
-        } else if (Math.abs(player.getCoordX() - coordX) < 2 && Math.abs(player.getCoordY() - coordY) < 2) {
-            player.changeHP(-power);
-            countdown = 15;
-            return true;
-        }
-        return false;
+        return behaviourStrategy.action(this, player, frame);
     }
 
     public int getRange() {

@@ -1,7 +1,7 @@
 package frame;
 
-import entities.mobs.*;
 import entities.Obstacle;
+import entities.mobs.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,16 +51,7 @@ public class FrameGenerator {
         int numberOfMobs = random.nextInt(MOB_RANDOM_MAX_SIZE);
         for (int i = 0; i < numberOfMobs; i++) {
             while (true) {
-//                Mob mob = new PassiveMob(random.nextInt(PLAYGROUND_WIDTH), random.nextInt(PLAYGROUND_HEIGHT), random.nextInt(MOB_RANDOM_MAX_POWER));
-                int randomMobIndex = random.nextInt(3);
-                Mob mob;
-                if (randomMobIndex == 0) {
-                    mob = new CowardMob(random.nextInt(PLAYGROUND_WIDTH), random.nextInt(PLAYGROUND_HEIGHT), 5);
-                } else if (randomMobIndex == 1) {
-                    mob = new AgressiveMob(random.nextInt(PLAYGROUND_WIDTH), random.nextInt(PLAYGROUND_HEIGHT), 5);
-                } else {
-                    mob = new PassiveMob(random.nextInt(PLAYGROUND_WIDTH), random.nextInt(PLAYGROUND_HEIGHT), 5);
-                }
+                Mob mob = new DefaultMob(random.nextInt(PLAYGROUND_WIDTH), random.nextInt(PLAYGROUND_HEIGHT), 5, getMobStrategy(random.nextInt(3)));
                 boolean badMob = false;
                 for (Obstacle obstacle : obstacleList) {
                     if (CollisionController.isObstacleCollidesWithMob(obstacle, mob)) {
@@ -81,5 +72,13 @@ public class FrameGenerator {
             }
         }
         return new Frame(obstacleList, mobList);
+    }
+
+    private BehaviourStrategy getMobStrategy(int pick) {
+        return switch (pick) {
+            case 0 -> new CowardBehaviourStrategy();
+            case 1 -> new AggressiveBehaviourStrategy();
+            default -> new PassiveBehaviourStrategy();
+        };
     }
 }
