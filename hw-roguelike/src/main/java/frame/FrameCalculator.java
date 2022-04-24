@@ -1,6 +1,5 @@
 package frame;
 
-import entities.mobs.DefaultMob;
 import entities.Player;
 import entities.PlayerDirection;
 import entities.mobs.Mob;
@@ -68,11 +67,7 @@ public class FrameCalculator {
     }
 
     private boolean playerOutOfRoomBounds() {
-        return outOfRoomBounds(player.getCoordX(), player.getCoordY());
-    }
-
-    private boolean outOfRoomBounds(int x, int y) {
-        return x < 0 || x >= FrameGenerator.PLAYGROUND_WIDTH || y < 0 || y >= FrameGenerator.PLAYGROUND_HEIGHT;
+        return FrameGenerator.outOfRoomBounds(player.getCoordX(), player.getCoordY());
     }
 
     private static class MeleeAttack {
@@ -123,7 +118,7 @@ public class FrameCalculator {
         };
         int ontoY = player.getCoordY() + damageDirectionY;
 
-        if (outOfRoomBounds(ontoX, ontoY)) {
+        if (FrameGenerator.outOfRoomBounds(ontoX, ontoY)) {
             return;
         }
 

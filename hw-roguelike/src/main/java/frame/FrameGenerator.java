@@ -81,4 +81,8 @@ public class FrameGenerator {
             default -> new PassiveBehaviourStrategy();
         };
     }
+
+    public static boolean outOfRoomBounds(int x, int y) {
+        return x < 0 || x >= FrameGenerator.PLAYGROUND_WIDTH || y < 0 || y >= FrameGenerator.PLAYGROUND_HEIGHT;
+    }
 }
