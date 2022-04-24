@@ -1,9 +1,8 @@
 package frame;
 
-import entities.mobs.DefaultMob;
 import entities.Obstacle;
-import entities.Player;
 import entities.mobs.Mob;
+import entities.player.Player;
 
 import java.util.List;
 

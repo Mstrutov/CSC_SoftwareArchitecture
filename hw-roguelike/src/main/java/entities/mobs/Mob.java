@@ -1,6 +1,6 @@
 package entities.mobs;
 
-import entities.Player;
+import entities.player.Player;
 import frame.Frame;
 
 public interface Mob {
@@ -26,7 +26,7 @@ public interface Mob {
 
     /**
      * Describes mob action depends on the player
-     * @param player
+     * @param player player
      * @return true if mob attacked
      */
     boolean action(Player player, Frame frame);
@@ -34,4 +34,6 @@ public interface Mob {
     int getRange();
 
     int getPower();
+
+    int getXPCost();
 }

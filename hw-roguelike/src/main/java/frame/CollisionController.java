@@ -36,7 +36,7 @@ public class CollisionController {
     }
 
     public static boolean isOkToMoveForMob(Frame frame, int coordX, int coordY) {
-        if (!FrameGenerator.outOfRoomBounds(coordX, coordY)) {
+        if (!RoomGenerator.outOfRoomBounds(coordX, coordY)) {
             return isOkToMove(frame, coordX, coordY);
         }
         return false;

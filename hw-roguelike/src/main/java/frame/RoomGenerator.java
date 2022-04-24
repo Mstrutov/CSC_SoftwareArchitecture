@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class FrameGenerator {
+public class RoomGenerator {
     public static final int OBSTACLES_RANDOM_MAX_NUMBER = 4;
     public static final int OBSTACLES_RANDOM_MAX_SIZE = 10;
 
@@ -83,6 +83,6 @@ public class FrameGenerator {
     }
 
     public static boolean outOfRoomBounds(int x, int y) {
-        return x < 0 || x >= FrameGenerator.PLAYGROUND_WIDTH || y < 0 || y >= FrameGenerator.PLAYGROUND_HEIGHT;
+        return x < 0 || x >= RoomGenerator.PLAYGROUND_WIDTH || y < 0 || y >= RoomGenerator.PLAYGROUND_HEIGHT;
     }
 }
