@@ -1,7 +1,9 @@
+import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import frame.Frame;
 import frame.FrameCalculator;
+import frame.RoomGenerator;
 import graphics.GraphicsDrawer;
 import input.Command;
 import input.InputScanner;
@@ -15,6 +17,8 @@ public class Main {
 
 
         DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
+        defaultTerminalFactory.setInitialTerminalSize(new TerminalSize(RoomGenerator.PLAYGROUND_WIDTH,
+                RoomGenerator.PLAYGROUND_HEIGHT + GraphicsDrawer.INVENTORY_HEIGHT));
         Screen screen = null;
         try {
             screen = defaultTerminalFactory.createScreen();
