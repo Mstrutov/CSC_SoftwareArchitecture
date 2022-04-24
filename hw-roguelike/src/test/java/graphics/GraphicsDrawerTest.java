@@ -7,7 +7,7 @@ import entities.Obstacle;
 import entities.mobs.DefaultMob;
 import entities.mobs.Mob;
 import frame.Frame;
-import frame.FrameGenerator;
+import frame.RoomGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -42,7 +42,7 @@ public class GraphicsDrawerTest {
 
     @Test
     void clearsScreenOnInit() {
-        verify(screen, times( FrameGenerator.PLAYGROUND_WIDTH * FrameGenerator.PLAYGROUND_HEIGHT))
+        verify(screen, times( RoomGenerator.PLAYGROUND_WIDTH * RoomGenerator.PLAYGROUND_HEIGHT))
                 .setCharacter(columnCaptor.capture(), rowCaptor.capture(), characterCaptor.capture());
 
         List<TextCharacter> chars = characterCaptor.getAllValues();
@@ -60,7 +60,7 @@ public class GraphicsDrawerTest {
         Frame frame = new Frame(List.of(obstacle), List.of(mob));
         graphicsDrawer.draw(frame);
 
-        int numClearingScreenOps = FrameGenerator.PLAYGROUND_WIDTH * FrameGenerator.PLAYGROUND_HEIGHT * 2;
+        int numClearingScreenOps = RoomGenerator.PLAYGROUND_WIDTH * RoomGenerator.PLAYGROUND_HEIGHT * 2;
         verify(screen, times( numClearingScreenOps + 2))
                 .setCharacter(columnCaptor.capture(), rowCaptor.capture(), characterCaptor.capture());
 

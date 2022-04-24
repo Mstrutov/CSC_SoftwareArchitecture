@@ -1,6 +1,6 @@
 package entities.mobs;
 
-import entities.Player;
+import entities.player.Player;
 import frame.Frame;
 
 public class DefaultMob implements Mob{
@@ -86,5 +86,10 @@ public class DefaultMob implements Mob{
 
     public int getRange() {
         return RANGE;
+    }
+
+    @Override
+    public int getXPCost() {
+        return 100;
     }
 }

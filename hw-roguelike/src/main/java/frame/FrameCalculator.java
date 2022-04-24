@@ -1,19 +1,20 @@
 package frame;
 
-import entities.Player;
-import entities.PlayerDirection;
 import entities.mobs.Mob;
+import entities.player.Player;
+import entities.player.PlayerDirection;
 import graphics.GraphicsDrawer;
 import input.Command;
 
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class FrameCalculator {
     private Frame currentFrame;
-    private final FrameGenerator frameGenerator = new FrameGenerator();
+    private final RoomGenerator roomGenerator = new RoomGenerator();
     private final Player player = new Player();
-    private Map<Integer, Map<Integer, Frame>> frames = new HashMap<>();
+    private final Map<Integer, Map<Integer, Frame>> frames = new HashMap<>();
     private int coordX = 0;
     private int coordY = 0;
     private final GraphicsDrawer graphicsDrawer;
@@ -27,7 +28,7 @@ public class FrameCalculator {
 
     public FrameCalculator(GraphicsDrawer graphicsDrawer) {
         this.graphicsDrawer = graphicsDrawer;
-        currentFrame = frameGenerator.getNextFrame();
+        currentFrame = roomGenerator.getNextFrame();
         currentFrame.addPlayer(player);
         frames.put(0, new HashMap<>(Map.of(0, currentFrame)));
     }
@@ -67,7 +68,7 @@ public class FrameCalculator {
     }
 
     private boolean playerOutOfRoomBounds() {
-        return FrameGenerator.outOfRoomBounds(player.getCoordX(), player.getCoordY());
+        return RoomGenerator.outOfRoomBounds(player.getCoordX(), player.getCoordY());
     }
 
     private static class MeleeAttack {
@@ -97,7 +98,7 @@ public class FrameCalculator {
     private void processPlayerAttack(List<Command> commands) {
         int totalDamage = commands.stream()
                 .filter(Predicate.isEqual(Command.ATTACK))
-                .mapToInt(attack -> 50)
+                .mapToInt(attack -> player.getAttackPower())
                 .reduce(0, Integer::sum);
 
         if (totalDamage == 0) {
@@ -118,7 +119,7 @@ public class FrameCalculator {
         };
         int ontoY = player.getCoordY() + damageDirectionY;
 
-        if (FrameGenerator.outOfRoomBounds(ontoX, ontoY)) {
+        if (RoomGenerator.outOfRoomBounds(ontoX, ontoY)) {
             return;
         }
 
@@ -130,8 +131,16 @@ public class FrameCalculator {
         gunShots.add(new Point(ontoX, ontoY));
         MeleeAttack attackSecondCell = new MeleeAttack(ontoX, ontoY, totalDamage);
         graphicsDrawer.drawCells(gunShots);
+
+        List<Mob> aliveMobsBefore = currentFrame.getMobs().stream()
+                .filter(mob -> !mob.isDead()).collect(Collectors.toList());
         assignDamageToMobs(attackFirstCell);
         assignDamageToMobs(attackSecondCell);
+        int xpForKilledMobs = aliveMobsBefore.stream()
+                .filter(Mob::isDead)
+                .mapToInt(Mob::getXPCost)
+                .sum();
+        player.addXP(xpForKilledMobs);
     }
 
     private void assignDamageToMobs(MeleeAttack attack) {
@@ -148,22 +157,22 @@ public class FrameCalculator {
     private void changeFrame() {
         if (player.getCoordX() < 0) {
             coordX -= 1;
-            player.moveCharacter(FrameGenerator.PLAYGROUND_WIDTH, 0);
-        } else if (player.getCoordX() >= FrameGenerator.PLAYGROUND_WIDTH) {
+            player.moveCharacter(RoomGenerator.PLAYGROUND_WIDTH, 0);
+        } else if (player.getCoordX() >= RoomGenerator.PLAYGROUND_WIDTH) {
             coordX += 1;
-            player.moveCharacter(-FrameGenerator.PLAYGROUND_WIDTH, 0);
+            player.moveCharacter(-RoomGenerator.PLAYGROUND_WIDTH, 0);
         } else if (player.getCoordY() < 0) {
             coordY -= 1;
-            player.moveCharacter(0, FrameGenerator.PLAYGROUND_HEIGHT);
-        } else if (player.getCoordY() >= FrameGenerator.PLAYGROUND_HEIGHT) {
+            player.moveCharacter(0, RoomGenerator.PLAYGROUND_HEIGHT);
+        } else if (player.getCoordY() >= RoomGenerator.PLAYGROUND_HEIGHT) {
             coordY += 1;
-            player.moveCharacter(0, -FrameGenerator.PLAYGROUND_HEIGHT);
+            player.moveCharacter(0, -RoomGenerator.PLAYGROUND_HEIGHT);
         }
         if (frames.get(coordX) == null) {
-            currentFrame = frameGenerator.getNextFrame();
+            currentFrame = roomGenerator.getNextFrame();
             frames.put(coordX, new HashMap<>(Map.of(coordY, currentFrame)));
         } else if (frames.get(coordX).get(coordY) == null) {
-                currentFrame = frameGenerator.getNextFrame();
+                currentFrame = roomGenerator.getNextFrame();
                 frames.get(coordX).put(coordY, currentFrame);
         } else {
             currentFrame = frames.get(coordX).get(coordY);

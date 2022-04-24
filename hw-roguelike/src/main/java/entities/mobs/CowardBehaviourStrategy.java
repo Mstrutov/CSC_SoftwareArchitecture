@@ -1,6 +1,6 @@
 package entities.mobs;
 
-import entities.Player;
+import entities.player.Player;
 import frame.CollisionController;
 import frame.Frame;
 

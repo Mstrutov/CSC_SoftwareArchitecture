@@ -5,9 +5,10 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.screen.Screen;
 import entities.Obstacle;
 import entities.mobs.Mob;
+import entities.player.Player;
 import frame.Frame;
-import frame.FrameGenerator;
 import frame.Point;
+import frame.RoomGenerator;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,12 +40,12 @@ public class GraphicsDrawer {
     private int gunshotCountdown = 5;
     private boolean isGameEnded = false;
 
-    private Map<Mob, Integer> mobsAttacked;
+    private final Map<Mob, Integer> mobsAttacked;
 
     private static void clearScreen(Screen screen) {
         // initialize window, it could be useful to draw here some lines, HUD block edges or smth
-        for (int column = 0; column < FrameGenerator.PLAYGROUND_WIDTH; column++) {
-            for (int row = 0; row < FrameGenerator.PLAYGROUND_HEIGHT; row++) {
+        for (int column = 0; column < RoomGenerator.PLAYGROUND_WIDTH; column++) {
+            for (int row = 0; row < RoomGenerator.PLAYGROUND_HEIGHT; row++) {
                 screen.setCharacter(column, row, TextCharacter.fromCharacter(
                         CHAR_OF.BLANK.get(),
                         TextColor.ANSI.DEFAULT,
@@ -97,7 +98,7 @@ public class GraphicsDrawer {
         for (Map.Entry<Mob, Integer> entry : mobsAttacked.entrySet()) {
             for (int i = entry.getKey().getCoordX() - entry.getKey().getRange(); i <= entry.getKey().getCoordX() + entry.getKey().getRange(); i++) {
                 for (int j = entry.getKey().getCoordY() - entry.getKey().getRange(); j <= entry.getKey().getCoordY() + entry.getKey().getRange(); j++) {
-                    if (i >= 0 && i < FrameGenerator.PLAYGROUND_WIDTH && j >= 0 && j < FrameGenerator.PLAYGROUND_HEIGHT) {
+                    if (i >= 0 && i < RoomGenerator.PLAYGROUND_WIDTH && j >= 0 && j < RoomGenerator.PLAYGROUND_HEIGHT) {
                         screen.setCharacter(i, j, TextCharacter
                                 .fromCharacter(
                                         CHAR_OF.GUNSHOT.get(),
@@ -146,7 +147,7 @@ public class GraphicsDrawer {
         if (frame.getPlayer() != null) {
             screen.setCharacter(frame.getPlayer().getCoordX(), frame.getPlayer().getCoordY(), TextCharacter.fromCharacter(
                     CHAR_OF.PLAYER.get(),
-                    frame.getPlayer().isHit() ? TextColor.ANSI.MAGENTA : TextColor.ANSI.DEFAULT,
+                    getColorForPlayerStatus(frame.getPlayer()),
                     TextColor.ANSI.DEFAULT)[0]);
         }
         try {
@@ -156,11 +157,24 @@ public class GraphicsDrawer {
         }
     }
 
+    // TODO: refactor status system. decorators?
+    private TextColor getColorForPlayerStatus(Player player) {
+        if (player.isHit()) {
+            return TextColor.ANSI.MAGENTA;
+        } else if (player.isGainedXp()) {
+            return TextColor.ANSI.YELLOW;
+        } else if (player.isLeveledUp()) {
+            return TextColor.ANSI.YELLOW_BRIGHT;
+        } else {
+            return TextColor.ANSI.DEFAULT;
+        }
+    }
+
     private void drawEndGameScreen() {
         int index = 0;
         String endMessage = "dead  ";
-        for (int i = 0; i < FrameGenerator.PLAYGROUND_HEIGHT; i++) {
-            for (int j = 0; j < FrameGenerator.PLAYGROUND_WIDTH; j++) {
+        for (int i = 0; i < RoomGenerator.PLAYGROUND_HEIGHT; i++) {
+            for (int j = 0; j < RoomGenerator.PLAYGROUND_WIDTH; j++) {
                 screen.setCharacter(j, i, TextCharacter.fromCharacter((endMessage.charAt(index)), TextColor.ANSI.WHITE, TextColor.ANSI.DEFAULT)[0]);
                 index++;
                 if (index == endMessage.length()) {
