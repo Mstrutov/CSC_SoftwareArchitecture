@@ -1,7 +1,11 @@
 package graphics;
 
+import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
+import com.googlecode.lanterna.graphics.TextGraphics;
+import com.googlecode.lanterna.gui2.Label;
+import com.googlecode.lanterna.gui2.Panel;
 import com.googlecode.lanterna.screen.Screen;
 import entities.Obstacle;
 import entities.mobs.Mob;
@@ -42,10 +46,12 @@ public class GraphicsDrawer {
 
     private final Map<Mob, Integer> mobsAttacked;
 
+    public static final int INVENTORY_HEIGHT = 5;
+
     private static void clearScreen(Screen screen) {
         // initialize window, it could be useful to draw here some lines, HUD block edges or smth
         for (int column = 0; column < RoomGenerator.PLAYGROUND_WIDTH; column++) {
-            for (int row = 0; row < RoomGenerator.PLAYGROUND_HEIGHT; row++) {
+            for (int row = 0; row < RoomGenerator.PLAYGROUND_HEIGHT + INVENTORY_HEIGHT; row++) {
                 screen.setCharacter(column, row, TextCharacter.fromCharacter(
                         CHAR_OF.BLANK.get(),
                         TextColor.ANSI.DEFAULT,
@@ -149,6 +155,24 @@ public class GraphicsDrawer {
                     CHAR_OF.PLAYER.get(),
                     getColorForPlayerStatus(frame.getPlayer()),
                     TextColor.ANSI.DEFAULT)[0]);
+
+            Panel panel = new Panel();
+            panel.addComponent(new Label("ssss"));
+
+            TextGraphics inventoryGraphics = screen.newTextGraphics();
+            TerminalPosition inventoryBoxTopLeft = new TerminalPosition(0, RoomGenerator.PLAYGROUND_HEIGHT);
+            TerminalPosition inventoryBoxTopRight =
+                    new TerminalPosition(RoomGenerator.PLAYGROUND_WIDTH - 1,RoomGenerator.PLAYGROUND_HEIGHT);
+            inventoryGraphics.drawLine(inventoryBoxTopLeft, inventoryBoxTopRight, '-');
+            inventoryGraphics.putString(inventoryBoxTopLeft.withRelative(1, 1),
+                    "HP:\t" + frame.getPlayer().getHealthPoints());
+            inventoryGraphics.putString(inventoryBoxTopLeft.withRelative(1, 3),
+                    "DMG:\t" + frame.getPlayer().getAttackPower());
+            inventoryGraphics.putString(inventoryBoxTopLeft.withRelative(15, 1),
+                    "XP:\t" + frame.getPlayer().getCurrentLevel().getCurrentLevelXP() + "/" + frame.getPlayer().getCurrentLevel().getCurrentLevelXPThreshold());
+            inventoryGraphics.putString(inventoryBoxTopLeft.withRelative(15, 3),
+                    "LVL:\t" + frame.getPlayer().getCurrentLevel().getLevelIndex());
+
         }
         try {
             screen.refresh();

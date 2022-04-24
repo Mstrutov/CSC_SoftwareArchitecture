@@ -32,6 +32,10 @@ public class Player {
         hitEffectCountdown = 5;
     }
 
+    public int getHealthPoints() {
+        return healthPoints;
+    }
+
     public boolean isDead() {
         return healthPoints <= 0;
     }
@@ -96,5 +100,9 @@ public class Player {
         if (level.addXP(xp)) {
             levelUpEffectCountdown = 100;
         }
+    }
+
+    public Level getCurrentLevel() {
+        return level;
     }
 }

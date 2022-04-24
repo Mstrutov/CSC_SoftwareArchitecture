@@ -42,7 +42,8 @@ public class GraphicsDrawerTest {
 
     @Test
     void clearsScreenOnInit() {
-        verify(screen, times( RoomGenerator.PLAYGROUND_WIDTH * RoomGenerator.PLAYGROUND_HEIGHT))
+        verify(screen,
+                times( RoomGenerator.PLAYGROUND_WIDTH * (RoomGenerator.PLAYGROUND_HEIGHT + GraphicsDrawer.INVENTORY_HEIGHT)))
                 .setCharacter(columnCaptor.capture(), rowCaptor.capture(), characterCaptor.capture());
 
         List<TextCharacter> chars = characterCaptor.getAllValues();
@@ -60,7 +61,7 @@ public class GraphicsDrawerTest {
         Frame frame = new Frame(List.of(obstacle), List.of(mob));
         graphicsDrawer.draw(frame);
 
-        int numClearingScreenOps = RoomGenerator.PLAYGROUND_WIDTH * RoomGenerator.PLAYGROUND_HEIGHT * 2;
+        int numClearingScreenOps = RoomGenerator.PLAYGROUND_WIDTH * (RoomGenerator.PLAYGROUND_HEIGHT + GraphicsDrawer.INVENTORY_HEIGHT) * 2;
         verify(screen, times( numClearingScreenOps + 2))
                 .setCharacter(columnCaptor.capture(), rowCaptor.capture(), characterCaptor.capture());
 
