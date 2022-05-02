@@ -195,4 +195,8 @@ public class FrameCalculator {
                 };
         player.setDirection(directionAfterLastMove);
     }
+
+    public MapGenerator getMapGenerator() {
+        return mapGenerator;
+    }
 }
