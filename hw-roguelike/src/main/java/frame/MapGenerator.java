@@ -132,4 +132,8 @@ public class MapGenerator {
     public static boolean outOfRoomBounds(int x, int y) {
         return x < 0 || x >= MapGenerator.PLAYGROUND_WIDTH || y < 0 || y >= MapGenerator.PLAYGROUND_HEIGHT;
     }
+
+    public Map<Integer, Map<Integer, Frame>> getFrames() {
+        return frames;
+    }
 }

@@ -1,6 +1,7 @@
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
+import frame.FileManager;
 import frame.Frame;
 import frame.FrameCalculator;
 import frame.MapGenerator;
@@ -39,7 +40,8 @@ public class Main {
                 Thread.sleep(20);   //TODO: need to optimize?
             }
 
-            screen.readInput();
+            FileManager fileManager = new FileManager();
+            fileManager.writeMap(frameCalculator.getMapGenerator().getFrames());
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         } finally {
