@@ -2,12 +2,11 @@ package frame;
 
 import entities.Obstacle;
 import entities.mobs.*;
+import entities.player.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
-public class RoomGenerator {
+public class MapGenerator {
     public static final int OBSTACLES_RANDOM_MAX_NUMBER = 4;
     public static final int OBSTACLES_RANDOM_MAX_SIZE = 10;
 
@@ -19,8 +18,16 @@ public class RoomGenerator {
     public static final int PLAYGROUND_HEIGHT = 24;
 
     private final Random random = new Random(0);
+    private final Map<Integer, Map<Integer, Frame>> frames = new HashMap<>();
 
-    public Frame getNextFrame() {
+    private Frame getNextFrame(int x, int y) {
+        List<Obstacle> obstacleList = generateObstacles();
+        List<Mob> mobList = generateMobs(obstacleList);
+
+        return new Frame(obstacleList, mobList, x, y);
+    }
+
+    private List<Obstacle> generateObstacles() {
         List<Obstacle> obstacleList = new ArrayList<>();
         int numberOfObstacles = random.nextInt(OBSTACLES_RANDOM_MAX_NUMBER) + 1;
         for (int i = 0; i < numberOfObstacles; i++) {
@@ -46,8 +53,12 @@ public class RoomGenerator {
                 break;
             }
         }
+        return obstacleList;
+    }
 
+    private List<Mob> generateMobs(List<Obstacle> obstacleList) {
         List<Mob> mobList = new ArrayList<>();
+
         int numberOfMobs = random.nextInt(MOB_RANDOM_MAX_SIZE);
         for (int i = 0; i < numberOfMobs; i++) {
             while (true) {
@@ -71,7 +82,43 @@ public class RoomGenerator {
                 }
             }
         }
-        return new Frame(obstacleList, mobList);
+        return mobList;
+    }
+
+    public Frame getInitialFrame() {
+        Frame constructedFrame = getNextFrame(0, 0);
+        frames.put(0, Map.of(0, constructedFrame));
+        return constructedFrame;
+    }
+
+    public Frame getAdjacentFrame(Frame currentFrame, Player player) {
+        int newFrameX = currentFrame.getCoordX();
+        int newFrameY = currentFrame.getCoordY();
+        if (player.getCoordX() < 0) {
+            newFrameX -= 1;
+            player.moveCharacter(PLAYGROUND_WIDTH, 0);
+        } else if (player.getCoordX() >= PLAYGROUND_WIDTH) {
+            newFrameX += 1;
+            player.moveCharacter(-PLAYGROUND_WIDTH, 0);
+        } else if (player.getCoordY() < 0) {
+            newFrameY -= 1;
+            player.moveCharacter(0, PLAYGROUND_HEIGHT);
+        } else if (player.getCoordY() >= PLAYGROUND_HEIGHT) {
+            newFrameY += 1;
+            player.moveCharacter(0, -PLAYGROUND_HEIGHT);
+        }
+        Frame nextFrame;
+        if (frames.get(newFrameX) == null) {
+            nextFrame = getNextFrame(newFrameX, newFrameY);
+            frames.put(newFrameX, Map.of(newFrameY, nextFrame));
+        } else if (frames.get(newFrameX).get(newFrameY) == null) {
+            nextFrame = getNextFrame(newFrameX, newFrameY);
+            frames.get(newFrameX).put(newFrameY, nextFrame);
+        } else {
+            nextFrame = frames.get(newFrameX).get(newFrameY);
+        }
+        nextFrame.addPlayer(player);
+        return nextFrame;
     }
 
     private BehaviourStrategy getMobStrategy(int pick) {
@@ -83,6 +130,6 @@ public class RoomGenerator {
     }
 
     public static boolean outOfRoomBounds(int x, int y) {
-        return x < 0 || x >= RoomGenerator.PLAYGROUND_WIDTH || y < 0 || y >= RoomGenerator.PLAYGROUND_HEIGHT;
+        return x < 0 || x >= MapGenerator.PLAYGROUND_WIDTH || y < 0 || y >= MapGenerator.PLAYGROUND_HEIGHT;
     }
 }

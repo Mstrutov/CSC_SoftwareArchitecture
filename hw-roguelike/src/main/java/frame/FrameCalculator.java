@@ -6,31 +6,22 @@ import entities.player.PlayerDirection;
 import graphics.GraphicsDrawer;
 import input.Command;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class FrameCalculator {
     private Frame currentFrame;
-    private final RoomGenerator roomGenerator = new RoomGenerator();
+    private final MapGenerator mapGenerator = new MapGenerator();
     private final Player player = new Player();
-    private final Map<Integer, Map<Integer, Frame>> frames = new HashMap<>();
-    private int coordX = 0;
-    private int coordY = 0;
     private final GraphicsDrawer graphicsDrawer;
-
-
-    public FrameCalculator(GraphicsDrawer graphicsDrawer, Frame startFrame) {
-        this.graphicsDrawer = graphicsDrawer;
-        currentFrame = startFrame;
-        frames.put(0, new HashMap<>(Map.of(0, currentFrame)));
-    }
 
     public FrameCalculator(GraphicsDrawer graphicsDrawer) {
         this.graphicsDrawer = graphicsDrawer;
-        currentFrame = roomGenerator.getNextFrame();
+        currentFrame = mapGenerator.getInitialFrame();
         currentFrame.addPlayer(player);
-        frames.put(0, new HashMap<>(Map.of(0, currentFrame)));
     }
 
     public Frame nextFrame(List<Command> commands) {
@@ -68,7 +59,7 @@ public class FrameCalculator {
     }
 
     private boolean playerOutOfRoomBounds() {
-        return RoomGenerator.outOfRoomBounds(player.getCoordX(), player.getCoordY());
+        return MapGenerator.outOfRoomBounds(player.getCoordX(), player.getCoordY());
     }
 
     private static class MeleeAttack {
@@ -119,7 +110,7 @@ public class FrameCalculator {
         };
         int ontoY = player.getCoordY() + damageDirectionY;
 
-        if (RoomGenerator.outOfRoomBounds(ontoX, ontoY)) {
+        if (MapGenerator.outOfRoomBounds(ontoX, ontoY)) {
             return;
         }
 
@@ -155,29 +146,7 @@ public class FrameCalculator {
     }
 
     private void changeFrame() {
-        if (player.getCoordX() < 0) {
-            coordX -= 1;
-            player.moveCharacter(RoomGenerator.PLAYGROUND_WIDTH, 0);
-        } else if (player.getCoordX() >= RoomGenerator.PLAYGROUND_WIDTH) {
-            coordX += 1;
-            player.moveCharacter(-RoomGenerator.PLAYGROUND_WIDTH, 0);
-        } else if (player.getCoordY() < 0) {
-            coordY -= 1;
-            player.moveCharacter(0, RoomGenerator.PLAYGROUND_HEIGHT);
-        } else if (player.getCoordY() >= RoomGenerator.PLAYGROUND_HEIGHT) {
-            coordY += 1;
-            player.moveCharacter(0, -RoomGenerator.PLAYGROUND_HEIGHT);
-        }
-        if (frames.get(coordX) == null) {
-            currentFrame = roomGenerator.getNextFrame();
-            frames.put(coordX, new HashMap<>(Map.of(coordY, currentFrame)));
-        } else if (frames.get(coordX).get(coordY) == null) {
-                currentFrame = roomGenerator.getNextFrame();
-                frames.get(coordX).put(coordY, currentFrame);
-        } else {
-            currentFrame = frames.get(coordX).get(coordY);
-        }
-        currentFrame.addPlayer(player);
+        currentFrame = mapGenerator.getAdjacentFrame(currentFrame, player);
     }
 
     private int processDeltaX(List<Command> commands) {

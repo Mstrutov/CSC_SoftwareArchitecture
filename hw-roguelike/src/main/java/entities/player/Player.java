@@ -1,6 +1,6 @@
 package entities.player;
 
-import frame.RoomGenerator;
+import frame.MapGenerator;
 
 public class Player {
     private int coordX;
@@ -16,8 +16,8 @@ public class Player {
 
     public Player() {
         this.healthPoints = 100;
-        coordX = RoomGenerator.PLAYGROUND_WIDTH / 2;
-        coordY = RoomGenerator.PLAYGROUND_HEIGHT / 2;
+        coordX = MapGenerator.PLAYGROUND_WIDTH / 2;
+        coordY = MapGenerator.PLAYGROUND_HEIGHT / 2;
         playerDirection = PlayerDirection.RIGHT;
         attackPower = 25;
         level = new Level();
