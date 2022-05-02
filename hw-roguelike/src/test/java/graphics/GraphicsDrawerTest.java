@@ -7,7 +7,7 @@ import entities.Obstacle;
 import entities.mobs.DefaultMob;
 import entities.mobs.Mob;
 import frame.Frame;
-import frame.RoomGenerator;
+import frame.MapGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -43,7 +43,7 @@ public class GraphicsDrawerTest {
     @Test
     void clearsScreenOnInit() {
         verify(screen,
-                times( RoomGenerator.PLAYGROUND_WIDTH * (RoomGenerator.PLAYGROUND_HEIGHT + GraphicsDrawer.INVENTORY_HEIGHT)))
+                times( MapGenerator.PLAYGROUND_WIDTH * (MapGenerator.PLAYGROUND_HEIGHT + GraphicsDrawer.INVENTORY_HEIGHT)))
                 .setCharacter(columnCaptor.capture(), rowCaptor.capture(), characterCaptor.capture());
 
         List<TextCharacter> chars = characterCaptor.getAllValues();
@@ -58,10 +58,10 @@ public class GraphicsDrawerTest {
         Obstacle obstacle = new Obstacle(10, 10, 10, 10);
         Mob mob = new DefaultMob(15, 15, 3);
 
-        Frame frame = new Frame(List.of(obstacle), List.of(mob));
+        Frame frame = new Frame(List.of(obstacle), List.of(mob), 0, 0);
         graphicsDrawer.draw(frame);
 
-        int numClearingScreenOps = RoomGenerator.PLAYGROUND_WIDTH * (RoomGenerator.PLAYGROUND_HEIGHT + GraphicsDrawer.INVENTORY_HEIGHT) * 2;
+        int numClearingScreenOps = MapGenerator.PLAYGROUND_WIDTH * (MapGenerator.PLAYGROUND_HEIGHT + GraphicsDrawer.INVENTORY_HEIGHT) * 2;
         verify(screen, times( numClearingScreenOps + 2))
                 .setCharacter(columnCaptor.capture(), rowCaptor.capture(), characterCaptor.capture());
 

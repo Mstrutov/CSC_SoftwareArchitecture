@@ -3,7 +3,7 @@ import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import frame.Frame;
 import frame.FrameCalculator;
-import frame.RoomGenerator;
+import frame.MapGenerator;
 import graphics.GraphicsDrawer;
 import input.Command;
 import input.InputScanner;
@@ -17,8 +17,8 @@ public class Main {
 
 
         DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
-        defaultTerminalFactory.setInitialTerminalSize(new TerminalSize(RoomGenerator.PLAYGROUND_WIDTH,
-                RoomGenerator.PLAYGROUND_HEIGHT + GraphicsDrawer.INVENTORY_HEIGHT));
+        defaultTerminalFactory.setInitialTerminalSize(new TerminalSize(MapGenerator.PLAYGROUND_WIDTH,
+                MapGenerator.PLAYGROUND_HEIGHT + GraphicsDrawer.INVENTORY_HEIGHT));
         Screen screen = null;
         try {
             screen = defaultTerminalFactory.createScreen();

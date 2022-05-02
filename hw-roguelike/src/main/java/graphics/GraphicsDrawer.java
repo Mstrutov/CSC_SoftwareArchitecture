@@ -11,8 +11,8 @@ import entities.Obstacle;
 import entities.mobs.Mob;
 import entities.player.Player;
 import frame.Frame;
+import frame.MapGenerator;
 import frame.Point;
-import frame.RoomGenerator;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,8 +50,8 @@ public class GraphicsDrawer {
 
     private static void clearScreen(Screen screen) {
         // initialize window, it could be useful to draw here some lines, HUD block edges or smth
-        for (int column = 0; column < RoomGenerator.PLAYGROUND_WIDTH; column++) {
-            for (int row = 0; row < RoomGenerator.PLAYGROUND_HEIGHT + INVENTORY_HEIGHT; row++) {
+        for (int column = 0; column < MapGenerator.PLAYGROUND_WIDTH; column++) {
+            for (int row = 0; row < MapGenerator.PLAYGROUND_HEIGHT + INVENTORY_HEIGHT; row++) {
                 screen.setCharacter(column, row, TextCharacter.fromCharacter(
                         CHAR_OF.BLANK.get(),
                         TextColor.ANSI.DEFAULT,
@@ -104,7 +104,7 @@ public class GraphicsDrawer {
         for (Map.Entry<Mob, Integer> entry : mobsAttacked.entrySet()) {
             for (int i = entry.getKey().getCoordX() - entry.getKey().getRange(); i <= entry.getKey().getCoordX() + entry.getKey().getRange(); i++) {
                 for (int j = entry.getKey().getCoordY() - entry.getKey().getRange(); j <= entry.getKey().getCoordY() + entry.getKey().getRange(); j++) {
-                    if (i >= 0 && i < RoomGenerator.PLAYGROUND_WIDTH && j >= 0 && j < RoomGenerator.PLAYGROUND_HEIGHT) {
+                    if (i >= 0 && i < MapGenerator.PLAYGROUND_WIDTH && j >= 0 && j < MapGenerator.PLAYGROUND_HEIGHT) {
                         screen.setCharacter(i, j, TextCharacter
                                 .fromCharacter(
                                         CHAR_OF.GUNSHOT.get(),
@@ -160,9 +160,9 @@ public class GraphicsDrawer {
             panel.addComponent(new Label("ssss"));
 
             TextGraphics inventoryGraphics = screen.newTextGraphics();
-            TerminalPosition inventoryBoxTopLeft = new TerminalPosition(0, RoomGenerator.PLAYGROUND_HEIGHT);
+            TerminalPosition inventoryBoxTopLeft = new TerminalPosition(0, MapGenerator.PLAYGROUND_HEIGHT);
             TerminalPosition inventoryBoxTopRight =
-                    new TerminalPosition(RoomGenerator.PLAYGROUND_WIDTH - 1,RoomGenerator.PLAYGROUND_HEIGHT);
+                    new TerminalPosition(MapGenerator.PLAYGROUND_WIDTH - 1, MapGenerator.PLAYGROUND_HEIGHT);
             inventoryGraphics.drawLine(inventoryBoxTopLeft, inventoryBoxTopRight, '-');
             inventoryGraphics.putString(inventoryBoxTopLeft.withRelative(1, 1),
                     "HP:\t" + frame.getPlayer().getHealthPoints());
@@ -197,8 +197,8 @@ public class GraphicsDrawer {
     private void drawEndGameScreen() {
         int index = 0;
         String endMessage = "dead  ";
-        for (int i = 0; i < RoomGenerator.PLAYGROUND_HEIGHT; i++) {
-            for (int j = 0; j < RoomGenerator.PLAYGROUND_WIDTH; j++) {
+        for (int i = 0; i < MapGenerator.PLAYGROUND_HEIGHT; i++) {
+            for (int j = 0; j < MapGenerator.PLAYGROUND_WIDTH; j++) {
                 screen.setCharacter(j, i, TextCharacter.fromCharacter((endMessage.charAt(index)), TextColor.ANSI.WHITE, TextColor.ANSI.DEFAULT)[0]);
                 index++;
                 if (index == endMessage.length()) {
